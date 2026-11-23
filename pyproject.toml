@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguasqueeze"
-version = "0.7.0"
-description = "Compress LLMs for Kazakh and Russian so they run on affordable hardware without losing the language"
+version = "0.8.0"
+description = "Compress for your language, not just for your hardware: language-aware quantization for multilingual MoE LLMs"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
@@ -15,6 +15,9 @@ dependencies = ["numpy", "torch"]
 [project.optional-dependencies]
 eval = ["datasets", "pandas", "transformers>=5"]
 test = ["pytest", "pandas", "transformers>=5"]
+
+[project.scripts]
+linguasqueeze = "linguasqueeze.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/s0nakh/linguasqueeze"

@@ -82,6 +82,22 @@ def test_summarize_reports_growth_against_the_baseline():
     assert list(table.index) == ["original", "small"]
 
 
+def test_summarize_bits_per_character_compare_tokenizers():
+    # same text (40 characters): one tokenizer needs 10 tokens, the other 20; equal total log-probability
+    coarse = pd.DataFrame(_scores("coarse", -10.0, True)).assign(chars=40)
+    fine = pd.DataFrame(_scores("fine", -10.0, True)).assign(chars=40)
+    fine.loc[fine.task == "belebele", "tokens"] = 20
+    table = summarize(pd.concat([coarse, fine]), {"coarse": 10.0, "fine": 10.0}, baseline="coarse")
+    assert table.loc["coarse", "bits_per_char_kk"] == pytest.approx(10 / np.log(2) / 40)
+    assert table.loc["fine", "bits_per_char_kk"] == pytest.approx(table.loc["coarse", "bits_per_char_kk"])
+    assert table.loc["fine", "ppl_kk"] < table.loc["coarse", "ppl_kk"]  # per token it would look better
+
+
+def test_summarize_without_characters_has_no_bits_per_character():
+    table = summarize(pd.DataFrame(_scores("original", -10.0, True)), {"original": 1.0}, baseline="original")
+    assert "bits_per_char_kk" not in table
+
+
 def test_summarize_requires_the_baseline():
     with pytest.raises(KeyError):
         summarize(pd.DataFrame(_scores("small", -11.0, False)), {"small": 15.0}, baseline="original")

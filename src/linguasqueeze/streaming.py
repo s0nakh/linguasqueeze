@@ -122,25 +122,31 @@ class StreamedModel:
 
         self.device = torch.device(device)
         self.dtype = dtype
-        self.config = AutoConfig.from_pretrained(model_dir)
+        config = AutoConfig.from_pretrained(model_dir)
+        # multimodal checkpoints (e.g. Qwen3.5/3.6 MoE): stream the language model only
+        self.config = getattr(config, "text_config", None) or config
         self.reader = CheckpointReader(model_dir)
+        self.prefix = "model.language_model." if "model.language_model.embed_tokens.weight" in self.reader else "model."
         with torch.device("meta"):
             self.model = AutoModelForCausalLM.from_config(self.config, dtype=dtype)
         self.model.eval()
         self.num_experts = int(getattr(self.config, "num_experts", 0) or 0)
         inner = self.model.model
-        for prefix, module in (("model.embed_tokens.", inner.embed_tokens), ("model.norm.", inner.norm),
+        for prefix, module in ((f"{self.prefix}embed_tokens.", inner.embed_tokens), (f"{self.prefix}norm.", inner.norm),
                                ("lm_head.", self.model.lm_head)):
             materialize_(module, read_module_state(module, prefix, self.reader, self.num_experts, dtype), self.device)
         inner.rotary_emb = type(inner.rotary_emb)(config=self.config).to(self.device)  # rebuilt off the meta device
         self.layers = inner.layers
+        # hybrid models (e.g. linear + full attention) pass each layer type its own mask: take the per-layer
+        # arguments from the model's own forward instead of rebuilding them here
+        self.hybrid = len(set(getattr(self.config, "layer_types", None) or [])) > 1
 
     @property
     def num_layers(self) -> int:
         return len(self.layers)
 
     def read_layer_state(self, index: int) -> dict[str, torch.Tensor]:
-        return read_module_state(self.layers[index], f"model.layers.{index}.", self.reader, self.num_experts, self.dtype)
+        return read_module_state(self.layers[index], f"{self.prefix}layers.{index}.", self.reader, self.num_experts, self.dtype)
 
     @torch.no_grad()
     def embed(self, batch: torch.Tensor) -> torch.Tensor:
@@ -157,7 +163,29 @@ class StreamedModel:
                 "position_embeddings": self.model.model.rotary_emb(hidden, position_ids)}
 
     @torch.no_grad()
+    def layer_arguments(self, hidden: torch.Tensor, attention_mask: torch.Tensor) -> list[dict]:
+        """The keyword arguments the model's own forward passes to every layer (masks per layer type, rotary
+        embeddings, position ids), recorded by running that forward with pass-through layers."""
+        recorded: list[dict] = []
+
+        class _Recorder(nn.Module):
+            def forward(self, hidden_states, *args, **kwargs):
+                recorded.append({k: v for k, v in kwargs.items() if k not in ("past_key_values", "use_cache")})
+                return hidden_states
+
+        inner = self.model.model
+        real = inner.layers
+        inner.layers = nn.ModuleList([_Recorder() for _ in range(len(real))])
+        try:
+            inner(inputs_embeds=hidden, attention_mask=attention_mask.to(self.device), use_cache=False)
+        finally:
+            inner.layers = real
+        return recorded
+
+    @torch.no_grad()
     def run_layer(self, index: int, hidden: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
+        if self.hybrid:
+            return self.layers[index](hidden, **self.layer_arguments(hidden, attention_mask)[index])
         return self.layers[index](hidden, **self.context(hidden, attention_mask))
 
     @torch.no_grad()

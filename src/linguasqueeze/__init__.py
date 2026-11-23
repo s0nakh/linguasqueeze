@@ -1,4 +1,4 @@
-"""LinguaSqueeze: language-aware compression for Mixture-of-Experts LLMs."""
+"""LinguaSqueeze: compress for your language, not just for your hardware."""
 
 from linguasqueeze.pruning import (
     MoEBlock,
@@ -23,7 +23,7 @@ from linguasqueeze.quant import (
     snapshot_experts,
 )
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 
 __all__ = [
     "allocate_bits_by_coverage",

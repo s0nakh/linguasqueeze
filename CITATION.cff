@@ -8,8 +8,8 @@ authors:
 repository-code: "https://github.com/s0nakh/linguasqueeze"
 url: "https://github.com/s0nakh/linguasqueeze"
 license: Apache-2.0
-version: "0.7.0"
-date-released: "2026-11-15"
+version: "0.8.0"
+date-released: "2026-11-23"
 keywords:
   - mixture-of-experts
   - quantization

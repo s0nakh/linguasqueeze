@@ -60,9 +60,13 @@ def build_example(tokenizer, row) -> dict:
     start, end = token_span(encoded["offset_mapping"], len(PASSAGE_PREFIX), len(PASSAGE_PREFIX) + len(passage))
     if start < 1 or end <= start:
         raise RuntimeError("Could not locate the passage among the tokens.")
+    offsets = encoded["offset_mapping"]
     return {
         "ids": torch.tensor([encoded["input_ids"]]),
         "passage_span": (start, end),
+        # characters covered by the scored tokens, edge tokens included (they may carry a space or newline):
+        # the denominator of bits per character must cover the same text as the summed log-probability
+        "span_chars": offsets[end - 1][1] - offsets[start][0],
         "label": int(row["correct_answer_num"]) - 1,
     }
 

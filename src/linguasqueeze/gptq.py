@@ -149,11 +149,13 @@ def _capture_moe_inputs(layer: nn.Module, inputs: Callable[[], Iterator[tuple[to
 @torch.no_grad()
 def _expert_hessians(xs: list[torch.Tensor], gate: nn.Module, experts: nn.Module,
                      stage: str) -> tuple[list[torch.Tensor], np.ndarray]:
-    """Per-expert H = XᵀX (stage 'gate_up': MoE input; stage 'down': act(gate)·up of that input)."""
+    """Per-expert H = XᵀX (stage 'gate_up': MoE input; stage 'down': act(gate)·up of that input).
+    Products are computed on the experts' device but kept in CPU memory: 256 experts × 2048² float32 is 4.3 GB,
+    too much next to a float32 layer on a 15 GB T4 (Qwen3.6 dry run ran out of GPU memory)."""
     num_experts = experts.gate_up_proj.shape[0]
     dim = experts.gate_up_proj.shape[2] if stage == "gate_up" else experts.down_proj.shape[2]
     device = experts.gate_up_proj.device
-    hessians = [torch.zeros(dim, dim, device=device) for _ in range(num_experts)]
+    hessians = [torch.zeros(dim, dim) for _ in range(num_experts)]
     counts = np.zeros(num_experts, dtype=np.int64)
     for x in xs:
         x = x.to(device)
@@ -163,7 +165,7 @@ def _expert_hessians(xs: list[torch.Tensor], gate: nn.Module, experts: nn.Module
             if stage == "down":
                 g, u = nn.functional.linear(tokens, experts.gate_up_proj[e].float()).chunk(2, dim=-1)
                 tokens = experts.act_fn(g) * u
-            hessians[e] += tokens.T @ tokens
+            hessians[e] += (tokens.T @ tokens).cpu()
             counts[e] += tokens.shape[0]
     return hessians, counts
 
@@ -171,7 +173,7 @@ def _expert_hessians(xs: list[torch.Tensor], gate: nn.Module, experts: nn.Module
 @torch.no_grad()
 def quantize_layer_gptq_(layer: nn.Module, expert_bits: np.ndarray, inputs, run_layer,
                          group_size: int = 128, min_tokens: int = 16, attention_bits: int | None = 8,
-                         expert_chunk: int = 32, record: dict | None = None) -> dict:
+                         expert_chunk: int = 16, record: dict | None = None) -> dict:
     """In place: attention to `attention_bits` (RTN), then every expert of this layer with GPTQ at
     `expert_bits[e]` bits, calibrated on `inputs()`. Returns per-expert calibration token counts.
 
@@ -179,7 +181,8 @@ def quantize_layer_gptq_(layer: nn.Module, expert_bits: np.ndarray, inputs, run_
     record["attention"][name] = (bits, scale, zero); record[stage][e] = (bits, scale, zero)."""
     if record is not None:
         record.update({"attention": {}, "gate_up": {}, "down": {}})
-    if attention_bits is not None:
+    # hybrid models: linear-attention layers have no self_attn; they are left at full precision
+    if attention_bits is not None and hasattr(layer, "self_attn"):
         for name in ATTENTION_PROJECTIONS:
             proj = getattr(layer.self_attn, name)
             q, scale, zero = rtn_quantize(proj.weight, attention_bits, group_size)
@@ -204,7 +207,7 @@ def quantize_layer_gptq_(layer: nn.Module, expert_bits: np.ndarray, inputs, run_
             for start in range(0, len(calibrated), expert_chunk):  # all experts of one bit-width at once
                 group = calibrated[start:start + expert_chunk]
                 quantized, scales, zeros = gptq_quantize_batched(
-                    param[group], torch.stack([hessians[e] for e in group]), bits, group_size, return_params=True)
+                    param[group], torch.stack([hessians[e] for e in group]).to(param.device), bits, group_size, return_params=True)
                 for k, e in enumerate(group):
                     param[e].copy_(quantized[k])
                     if record is not None:
@@ -248,7 +251,7 @@ def make_quantization_prepare(streamed, plans: dict[str, dict], group_size: int 
         bits = (plan["bits"](config, index, layer, inputs, run_layer) if callable(plan["bits"])
                 else np.asarray(plan["bits"])[index])
         if plan["method"] == "rtn":
-            if attention_bits is not None:
+            if attention_bits is not None and hasattr(layer, "self_attn"):
                 for name in ATTENTION_PROJECTIONS:
                     proj = getattr(layer.self_attn, name)
                     proj.weight.copy_(fake_quantize(proj.weight, attention_bits, group_size))

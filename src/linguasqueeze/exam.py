@@ -64,7 +64,8 @@ def build_exam(tokenizer) -> list[ExamItem]:
         for _, row in df.iterrows():
             ex = build_example(tokenizer, row)
             items.append(ExamItem(tuple(ex["ids"][0].tolist()), tuple(ex["passage_span"]), tuple(letter_ids[:4]),
-                                  {"task": "belebele", "lang": lang, "label": ex["label"]}))
+                                  {"task": "belebele", "lang": lang, "label": ex["label"],
+                                   "chars": ex["span_chars"]}))
     for lang in ("kk", "ru"):
         for _, row in _kazmmlu_rows(lang, KAZMMLU_PER_LANGUAGE, SEED).iterrows():
             options = [(l, str(row[f"Option {l}"])) for l in LETTERS
@@ -114,6 +115,8 @@ def summarize(scores, size_gb: dict[str, float], baseline: str):
     """One row per config: perplexity and accuracy per language, growth vs. `baseline`, compression.
 
     `scores` has the notebook 07 columns: config, task, lang, label, logprob, tokens, choice, probe, candidate.
+    With a `chars` column (passage length in characters, from notebook 11 on) it also gives bits per character,
+    which, unlike perplexity per token, compares models with different tokenizers.
     """
     import pandas as pd
 
@@ -124,6 +127,8 @@ def summarize(scores, size_gb: dict[str, float], baseline: str):
             spans = group[(group.task == "belebele") & (group.lang == lang)]
             row[f"ppl_{lang}"] = float(np.exp(-spans.logprob.sum() / spans.tokens.sum()))
             row[f"belebele_{lang}"] = float((spans.choice == spans.label).mean())
+            if "chars" in spans and spans.chars.notna().all():  # comparable across tokenizers
+                row[f"bits_per_char_{lang}"] = float(-spans.logprob.sum() / np.log(2) / spans.chars.sum())
         for lang in ("kk", "ru"):
             mmlu = group[(group.task == "kazmmlu") & (group.lang == lang)]
             row[f"kazmmlu_{lang}"] = float((mmlu.choice == mmlu.label).mean())
