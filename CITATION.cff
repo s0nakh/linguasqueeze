@@ -8,7 +8,7 @@ authors:
 repository-code: "https://github.com/s0nakh/linguasqueeze"
 url: "https://github.com/s0nakh/linguasqueeze"
 license: Apache-2.0
-version: "0.8.0"
+version: "0.8.1"
 date-released: "2026-11-23"
 keywords:
   - mixture-of-experts

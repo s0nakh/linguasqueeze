@@ -41,7 +41,8 @@ First proof: Kazakh 🇰🇿 and Russian 🇷🇺 on Qwen3-30B-A3B — 61 GB →
 ## 🚀 Quick start
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.0" transformers datasets
+pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1" transformers datasets
+linguasqueeze --version   # linguasqueeze 0.8.1
 ```
 
 ```bash
@@ -60,9 +61,9 @@ linguasqueeze evaluate \
   --exam --report report.json
 ```
 
-Calibration and test files are plain UTF-8 text, documents separated by an empty line — any language works.
-`--exam` adds the fixed exam of notebook 07: Belebele (150 passages each in kk, ru, en) and a 400-question KazMMLU sample per language (kk, ru). The KazMMLU numbers below come from the full test split (22,889 questions, notebook 07b), so a sample run gives somewhat different values. The model streams one layer at a time, so a 61 GB model runs on one 16 GB GPU.
-Supported for now: Qwen3-MoE and Qwen3.5/3.6-MoE checkpoints in safetensors.
+Calibration and test files are plain UTF-8 text, documents separated by an empty line. The command accepts text in any language; quality has been measured only for Kazakh and Russian.
+`--exam` adds the fixed exam of notebook 07: Belebele (150 passages each in kk, ru, en) and a 400-question KazMMLU sample per language (kk, ru). The KazMMLU numbers below come from the full test split (22,889 questions, notebook 07b), so a sample run gives somewhat different values. The quick exam is kept small so that it runs on Kaggle in reasonable time; for publication-grade KazMMLU numbers use notebook 07b. `compress` and `evaluate` stream the model one layer at a time, so a 61 GB source model is processed on one 16 GB GPU; what the compressed model needs to run depends on your runtime and context length.
+Supported for now: `compress` — Qwen3-MoE checkpoints in safetensors (run end to end on Qwen3-30B-A3B); `evaluate` — Qwen3-MoE and Qwen3.5/3.6-MoE.
 
 What `evaluate` reports (abbreviated), with the numbers we measured for Qwen3-30B-A3B with the same code ([notebook 07](notebooks/07_real_gptq_checkpoint.py), [07b](notebooks/07b_full_kazmmlu.py)):
 
@@ -79,6 +80,12 @@ KazMMLU ru:        -1.6 pts
 **These two commands, run on Qwen3-30B-A3B** (one Kaggle T4, 43 min for `compress`, 49 min for `evaluate`): 15.24 GB file, 4.0× smaller; Belebele perplexity kk +0.6%, ru +0.4%, en +4.0%; KazMMLU sample kk −0.8 pts [−3.5, +1.9], ru −1.5 pts [−4.3, +1.0] (370 + 392 questions). The calibration articles are those of notebook 07 with empty lines collapsed, so the numbers are close to, not identical with, notebook 07. Report and script: [`experiments/cli/`](experiments/cli/).
 
 Speed and memory at inference depend on your runtime, so `evaluate` does not guess them; measure them there.
+
+## 📍 Current status (v0.8.1)
+
+**Available now:** `linguasqueeze compress` for Qwen3-MoE checkpoints · `linguasqueeze evaluate` for Qwen3-MoE and Qwen3.5/3.6-MoE · mixed 4/3-bit export in the standard GPTQ layout · calibration from plain text in any language · optional Belebele + KazMMLU exam · JSON report.
+
+**Not yet:** running mixed-width files in vLLM, llama.cpp, Ollama or LM Studio · compressing Qwen3.5/3.6-MoE · dense (non-MoE) models · speed and memory measurements of the compressed model.
 
 ## 🏆 Result
 
@@ -432,9 +439,10 @@ Data: [`experiments/10/`](experiments/10/)
 
 - The main result is one model (Qwen3-30B-A3B) and one seed; the first language pair is Kazakh + Russian. Do not read it as proof that every model or language gains equally.
 - Compression is not lossless: on the full KazMMLU the 4/3-bit file loses 1.8 points in Kazakh and 1.6 in Russian.
+- The calibration language did not change knowledge. On Qwen3.6-35B-A3B with every expert at 3 bits (same size), Kazakh + Russian calibration against English calibration scored KazMMLU kk +0.4 points [−1.1, +1.8] on 3,000 questions and ru +1.8 [−0.2, +3.6] on 1,200 questions: no significant difference. The gain we measure is in how the model handles text in the language (perplexity), not in exam knowledge. Data: [`experiments/calibration-language/`](experiments/calibration-language/).
 - At 2 bits the calibration language helps little (Kazakh loss +18.9% → +15.1%, notebook 10); the bit allocation matters more.
 - Common fast runtimes cannot yet run different bit widths for experts of one layer. GPTQModel runs the file, slowly (about 1.6 tokens/s on two T4).
-- The command line supports Qwen3-MoE and Qwen3.5/3.6-MoE checkpoints only.
+- `compress` writes files for the Qwen3-MoE layout only; Qwen3.5/3.6-MoE can be scored with `evaluate` but not yet compressed. Dense (non-MoE) models are not supported.
 - Datasets and models keep their own licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## 🤝 Contributing
@@ -444,7 +452,7 @@ Most welcome: reproductions on other GPUs and runtimes, support for more MoE arc
 ## 📦 Python package
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.0"
+pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1"
 ```
 
 | Module | What it does |
@@ -510,7 +518,7 @@ If you use LinguaSqueeze in your work, please cite it. Each block below has a co
   title   = {LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs},
   author  = {Akhmetova, Sophia},
   year    = {2026},
-  version = {0.6.1},
+  version = {0.8.1},
   url     = {https://github.com/s0nakh/linguasqueeze}
 }
 ```
@@ -518,7 +526,7 @@ If you use LinguaSqueeze in your work, please cite it. Each block below has a co
 **APA**
 
 ```text
-Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.6.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
+Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
 ```
 
 ## ⚖️ License

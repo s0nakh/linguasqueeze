@@ -32,8 +32,11 @@ def _default_device() -> str:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    from linguasqueeze import __version__
+
     parser = argparse.ArgumentParser(prog="linguasqueeze",
                                      description="Compress for your language, not just for your hardware.")
+    parser.add_argument("--version", action="version", version=f"linguasqueeze {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     c = sub.add_parser("compress", help="write a GPTQ checkpoint calibrated on your language")

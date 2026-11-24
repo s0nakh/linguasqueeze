@@ -86,6 +86,15 @@ def test_parser_reads_bits_and_language_texts():
     assert args.text == [("kk", "x.txt")] and not args.exam
 
 
+def test_version_flag_prints_the_package_version(capsys):
+    from linguasqueeze import __version__
+
+    with pytest.raises(SystemExit) as exit_info:
+        build_parser().parse_args(["--version"])
+    assert exit_info.value.code == 0
+    assert capsys.readouterr().out.strip() == f"linguasqueeze {__version__}"
+
+
 def test_parser_rejects_malformed_values():
     with pytest.raises(SystemExit):
         build_parser().parse_args(["evaluate", "--original", "a", "--compressed", "b", "--text", "kk"])

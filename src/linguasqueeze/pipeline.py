@@ -77,7 +77,10 @@ def compress(model_dir: str | Path, calibration_files: Sequence[str | Path], out
 
     streamed = StreamedModel(model_dir, device=device, dtype=torch.float32)  # fp32 per layer: no fp16 overflow
     if streamed.num_experts == 0:
-        raise ValueError("only Mixture-of-Experts models (Qwen3-MoE / Qwen3.5-MoE layout) are supported for now")
+        raise ValueError("only Mixture-of-Experts models (Qwen3-MoE layout) are supported for now")
+    if streamed.prefix != "model." or getattr(streamed, "hybrid", False):
+        raise ValueError("writing a compressed file is supported for the Qwen3-MoE layout only for now; "
+                         "Qwen3.5/3.6-MoE checkpoints can be scored with `evaluate` but not yet compressed")
     if tokenizer is None:
         from transformers import AutoTokenizer
         tokenizer = AutoTokenizer.from_pretrained(model_dir)

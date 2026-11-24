@@ -41,7 +41,8 @@
 ## 🚀 Быстрый старт
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.0" transformers datasets
+pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1" transformers datasets
+linguasqueeze --version   # linguasqueeze 0.8.1
 ```
 
 ```bash
@@ -60,9 +61,9 @@ linguasqueeze evaluate \
   --exam --report report.json
 ```
 
-Файлы для калибровки и проверки — обычный текст UTF-8, документы разделены пустой строкой; подходит любой язык.
-`--exam` добавляет фиксированный экзамен ноутбука 07: Belebele (по 150 текстов на kk, ru, en) и выборку KazMMLU по 400 вопросов на язык (kk, ru). Цифры KazMMLU ниже получены на полном экзамене (22 889 вопросов, ноутбук 07b), поэтому на выборке выйдут немного другие значения. Модель загружается по одному слою, поэтому модель на 61 ГБ работает на одной видеокарте с 16 ГБ.
-Пока поддерживаются: Qwen3-MoE и Qwen3.5/3.6-MoE в формате safetensors.
+Файлы для калибровки и проверки — обычный текст UTF-8, документы разделены пустой строкой. Команда принимает текст на любом языке; качество измерено только для казахского и русского.
+`--exam` добавляет фиксированный экзамен ноутбука 07: Belebele (по 150 текстов на kk, ru, en) и выборку KazMMLU по 400 вопросов на язык (kk, ru). Цифры KazMMLU ниже получены на полном экзамене (22 889 вопросов, ноутбук 07b), поэтому на выборке выйдут немного другие значения. Быстрый экзамен намеренно небольшой, чтобы уложиться во время Kaggle; для цифр KazMMLU уровня публикации используйте ноутбук 07b. `compress` и `evaluate` загружают модель по одному слою, поэтому исходная модель на 61 ГБ обрабатывается на одной видеокарте с 16 ГБ; сколько памяти нужно для запуска сжатой модели, зависит от программы запуска и длины контекста.
+Пока поддерживаются: `compress` — Qwen3-MoE в формате safetensors (полный прогон на Qwen3-30B-A3B); `evaluate` — Qwen3-MoE и Qwen3.5/3.6-MoE.
 
 Что выдаёт `evaluate` (сокращённо), с цифрами, которые мы получили для Qwen3-30B-A3B тем же кодом ([ноутбук 07](notebooks/07_real_gptq_checkpoint.py), [07b](notebooks/07b_full_kazmmlu.py)):
 
@@ -79,6 +80,12 @@ KazMMLU ru:        -1.6 pts
 **Эти две команды, запущенные на Qwen3-30B-A3B** (одна T4 на Kaggle, 43 мин на `compress`, 49 мин на `evaluate`): файл 15,24 ГБ, в 4,0 раза меньше; перплексия Belebele kk +0,6%, ru +0,4%, en +4,0%; выборка KazMMLU kk −0,8 п. [−3,5; +1,9], ru −1,5 п. [−4,3; +1,0] (370 + 392 вопроса). Статьи для калибровки — те же, что в ноутбуке 07, но с убранными пустыми строками, поэтому цифры близки к ноутбуку 07, но не совпадают. Отчёт и скрипт: [`experiments/cli/`](experiments/cli/).
 
 Скорость и память при работе модели зависят от программы запуска, поэтому `evaluate` их не угадывает: измеряйте там.
+
+## 📍 Что есть сейчас (v0.8.1)
+
+**Уже работает:** `linguasqueeze compress` для Qwen3-MoE · `linguasqueeze evaluate` для Qwen3-MoE и Qwen3.5/3.6-MoE · смешанный экспорт 4/3 бита в стандартном формате GPTQ · калибровка по обычному тексту на любом языке · по желанию экзамен Belebele + KazMMLU · отчёт в JSON.
+
+**Пока нет:** запуска файлов со смешанной разрядностью в vLLM, llama.cpp, Ollama или LM Studio · сжатия Qwen3.5/3.6-MoE · обычных (не MoE) моделей · замеров скорости и памяти сжатой модели.
 
 ## 🏆 Результат
 
@@ -432,9 +439,10 @@ MoE на 30 млрд параметров в 16 битах весит 61 ГБ, �
 
 - Главный результат — одна модель (Qwen3-30B-A3B) и один запуск; первая пара языков — казахский и русский. Это не доказательство, что любая модель и любой язык выиграют одинаково.
 - Сжатие не без потерь: на полном KazMMLU файл 4/3 бита теряет 1,8 пункта в казахском и 1,6 в русском.
+- Язык калибровки не изменил знания. На Qwen3.6-35B-A3B, где все эксперты сжаты до 3 бит (размер одинаковый), калибровка на казахском и русском против английской дала на KazMMLU kk +0,4 пункта [−1,1; +1,8] на 3000 вопросах и ru +1,8 [−0,2; +3,6] на 1200 вопросах — значимой разницы нет. Выигрыш, который мы измеряем, — в том, как модель обращается с текстом на языке (перплексия), а не в знаниях на экзамене. Данные: [`experiments/calibration-language/`](experiments/calibration-language/).
 - На 2 битах язык калибровки помогает мало (потеря казахского +18,9% → +15,1%, ноутбук 10); распределение бит важнее.
 - Популярные быстрые программы запуска пока не умеют запускать экспертов одного слоя с разным числом бит. GPTQModel запускает файл, но медленно (около 1,6 токена/с на двух T4).
-- Командная строка пока поддерживает только Qwen3-MoE и Qwen3.5/3.6-MoE.
+- `compress` записывает файлы только для устройства Qwen3-MoE; Qwen3.5/3.6-MoE можно оценить через `evaluate`, но пока нельзя сжать. Обычные (не MoE) модели не поддерживаются.
 - Наборы данных и модели сохраняют свои лицензии; см. [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## 🤝 Участие
@@ -444,7 +452,7 @@ MoE на 30 млрд параметров в 16 битах весит 61 ГБ, �
 ## 📦 Python-пакет
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.0"
+pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1"
 ```
 
 | Модуль | Что делает |
@@ -510,7 +518,7 @@ Akhmetova, S. (2026). LinguaSqueeze: Language-aware mixed-precision quantization
   title   = {LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs},
   author  = {Akhmetova, Sophia},
   year    = {2026},
-  version = {0.6.1},
+  version = {0.8.1},
   url     = {https://github.com/s0nakh/linguasqueeze}
 }
 ```
@@ -518,7 +526,7 @@ Akhmetova, S. (2026). LinguaSqueeze: Language-aware mixed-precision quantization
 **APA**
 
 ```text
-Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.6.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
+Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
 ```
 
 ## ⚖️ Лицензия

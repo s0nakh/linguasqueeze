@@ -1,8 +1,8 @@
 # Related work
 
-*Survey as of 2026-11-18 · [Русская версия](prior-art.ru.md) · [Қазақша нұсқасы](prior-art.kk.md)*
+*Survey as of 2026-11-24 · [Русская версия](prior-art.ru.md) · [Қазақша нұсқасы](prior-art.kk.md)*
 
-Sources: arXiv and GitHub/Hugging Face pages, each checked by hand. The full texts of the works cited in the preprint were read (audits of 2026-11-17 and 2026-11-18); the other rows rest on abstracts.
+Sources: arXiv and GitHub/Hugging Face pages, each checked by hand. The full texts of the works cited in the preprint were read (audits of 2026-11-17 and 2026-11-18); ProQuant, NatScale, Colla-Q and REAM were read in full on 2026-11-24; the other rows rest on abstracts.
 
 ## Closest work
 
@@ -32,6 +32,10 @@ Sources: arXiv and GitHub/Hugging Face pages, each checked by hand. The full tex
 | DuoRate (2026-10) | Two-rate per-expert precision allocation for serving; in its decode-rate formulation routing frequency cancels from the per-expert choice; English benchmarks. | [arXiv:2610.13328](https://arxiv.org/abs/2610.13328) |
 | Routing is not a quantization proxy (Liu, 2026-10) | Qwen-3.6-35B-A3B on code tasks: layer-wise allocation guided by routing statistics does not beat uniform or random allocation at equal bits. Per-expert allocation not tested. | [arXiv:2610.20826](https://arxiv.org/abs/2610.20826) |
 | Language Routing Isolation (Zheng et al., 2026) | Phi-3.5-MoE and Qwen3-30B-A3B: high- and low-resource languages activate largely disjoint experts; subnetwork fine-tuning, no compression. | [arXiv:2604.03592](https://arxiv.org/abs/2604.03592) |
+| ProQuant (2026-10) | Qwen3-30B-A3B-Instruct-2507 and Qwen3.5-35B-A3B at 1.5–2.5 average expert bits: one integer program chooses per expert between pruning (0 bits), 2 and 3 bits, then a routing-preserving RMSNorm fine-tune. English C4 calibration, English benchmarks. Ranking experts by activation count does worse than routing-score-weighted error; perplexity does not predict generation quality. Full text read 2026-11-24. | [arXiv:2610.30779](https://arxiv.org/abs/2610.30779) |
+| NatScale (2026-10) | Qwen3.6-35B-A3B, Qwen3.8-Flash-Next, DeepSeek-V4-Flash at 2–3 bits per routed weight: gradient-based expert sensitivity with a calibrated contrast, plus AlphaQ's spectral prior. English chat calibration, WikiText-2 evaluation; lower KL divergence than Unsloth Dynamic GGUF files of the same size on Qwen3.8-Flash-Next. No multilingual evaluation. Full text read 2026-11-24. | [arXiv:2610.20353](https://arxiv.org/abs/2610.20353) |
+| Colla-Q (2026-09) | Mixtral 8×7B, DeepSeek-MoE-16B, Phi-3.5-MoE: bits by activation entropy with minimax balancing. Routing-frequency allocation changes with the calibration set (C4, math, French, QA); theirs barely does. Full text read 2026-11-24. | [arXiv:2609.18131](https://arxiv.org/abs/2609.18131) |
+| REAM (2026-04) | Merging instead of pruning 25–50% of experts (Qwen3-30B-A3B and larger). The calibration mix decides what survives: without code data, code tasks fall to near zero. Full text read 2026-11-24. | [arXiv:2604.04356](https://arxiv.org/abs/2604.04356) |
 
 Routing analyses:
 - Language-specific experts sit in early and late layers; middle layers are shared across languages ([arXiv:2510.04694](https://arxiv.org/abs/2510.04694), [arXiv:2601.14050](https://arxiv.org/abs/2601.14050)).
@@ -43,7 +47,7 @@ Routing analyses:
 - keeping the experts that language X needs;
 - calibrating REAP on the target language;
 - combining pruning with quantization;
-- giving different experts different bit widths (QuantMoE-Bench, MC, MoPEQ, GEMQ, Q-Strata, AlphaQ);
+- giving different experts different bit widths (QuantMoE-Bench, MC, MoPEQ, GEMQ, Q-Strata, AlphaQ, ProQuant, NatScale, Colla-Q);
 - non-English calibration for quantizing dense models (Calibrating Beyond English).
 
 **Open questions this project addresses:**
