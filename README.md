@@ -6,7 +6,8 @@
 
 **Language-aware quantization for multilingual Mixture-of-Experts LLMs.**
 A quantized model can look fine on one average score while it loses a smaller language. LinguaSqueeze calibrates on text in *your* language, gives more bits to the experts your language actually uses, and tells you what your language lost. On Qwen3-30B-A3B, choosing bits and calibration by English text instead costs Kazakh 16× more at the same memory.
-First proof: Kazakh 🇰🇿 and Russian 🇷🇺 on Qwen3-30B-A3B — 61 GB → 15.24 GB, Kazakh perplexity +1.3%, on one free Kaggle GPU.
+First proof: Kazakh 🇰🇿 and Russian 🇷🇺 on Qwen3-30B-A3B — 61 GB → 15.24 GB, Kazakh perplexity +1.3%, on one free Kaggle GPU.<br>
+Translation English → Kazakh at the same size: **+5.5 chrF** over the file compressed for English.
 
 <sub>Formerly <b>LinguaPrune</b>: renamed on 20.11.2026 because the method mostly squeezes experts into fewer bits rather than removing them. Old links and <code>import linguaprune</code> keep working.</sub>
 
@@ -25,9 +26,9 @@ First proof: Kazakh 🇰🇿 and Russian 🇷🇺 on Qwen3-30B-A3B — 61 GB →
 </p>
 <p>
 <a href="https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"><img alt="Model" src="https://img.shields.io/badge/model-Qwen3--30B--A3B-F0529C?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
-<a href="#-citation"><img alt="Cite" src="https://img.shields.io/badge/cite-BibTeX-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a>
-<a href="#-evaluation"><img alt="Eval" src="https://img.shields.io/badge/eval-KazMMLU%20%C2%B7%20Belebele-00C2FF?style=for-the-badge&labelColor=0D1117&logo=meta&logoColor=white"></a>
-<a href="#-evaluation"><img alt="Languages" src="https://img.shields.io/badge/languages-kk%20%C2%B7%20ru-39FF14?style=for-the-badge&labelColor=0D1117&logo=googletranslate&logoColor=white"></a>
+<a href="#citation"><img alt="Cite" src="https://img.shields.io/badge/cite-BibTeX-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a>
+<a href="#evaluation"><img alt="Eval" src="https://img.shields.io/badge/eval-KazMMLU%20%C2%B7%20Belebele-00C2FF?style=for-the-badge&labelColor=0D1117&logo=meta&logoColor=white"></a>
+<a href="#evaluation"><img alt="Languages" src="https://img.shields.io/badge/languages-kk%20%C2%B7%20ru-39FF14?style=for-the-badge&labelColor=0D1117&logo=googletranslate&logoColor=white"></a>
 <a href="README.ru.md"><img alt="Docs" src="https://img.shields.io/badge/docs-EN%20%C2%B7%20RU%20%C2%B7%20KK-A020F0?style=for-the-badge&labelColor=0D1117&logo=readthedocs&logoColor=white"></a>
 <a href="https://doi.org/10.5281/zenodo.24281161"><img alt="Paper" src="https://img.shields.io/badge/paper-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
@@ -87,6 +88,20 @@ Speed and memory at inference depend on your runtime, so `evaluate` does not gue
 
 **Not yet:** running mixed-width files in vLLM, llama.cpp, Ollama or LM Studio · compressing Qwen3.5/3.6-MoE · dense (non-MoE) models · speed and memory measurements of the compressed model.
 
+## 👥 Who it is for
+
+A tool that helps a small team compress a large model for its own language on affordable hardware — and see what that language lost after compression.
+
+- **Model developers** — compress an open model for your users' language and check it before release.
+- **Researchers and universities** — reproducible measurements per language: size, perplexity, exam, with error bars.
+- **Small teams** — no expensive GPUs: compressing and evaluating the source model runs on one 16 GB card, such as the free one on Kaggle. Memory for running the compressed model depends on your runtime.
+- **Any language** — Kazakh, Uzbek, Arabic, Hindi, Ukrainian, Vietnamese: all you need is text in your language. Quality has been measured for Kazakh and Russian so far.
+
+> **Why:** compression is usually judged by size and speed. LinguaSqueeze also shows what happened to your language after compression.
+
+**Contents:** [Result](#result) · [Why](#why) · [How it works](#how) · [Evaluation](#evaluation) · [Notebooks](#notebooks) · [How we got here](#history) · [Roadmap](#roadmap) · [Limitations](#limitations) · [Paper](#paper) · [Citation](#citation)
+
+<a id="result"></a>
 ## 🏆 Result
 
 **Qwen3-30B-A3B goes from 61 GB to a real 15.24 GB file (4.0× smaller) while Kazakh perplexity grows by 1.3% and Russian by 0.4%.** Every number in this table is scored from the written file, not from a simulation.
@@ -146,6 +161,7 @@ This is perplexity, i.e. how well each file keeps Kazakh and Russian text. Knowl
 
 All raw scores, per question: [`experiments/07/full/`](experiments/07/full/) and [`experiments/06/full/`](experiments/06/full/). The paired tests are in the [research log](docs/research-log.md#2026-11-12--06--qwen3-30b-a3b-compressed-4).
 
+<a id="why"></a>
 ## 💡 Why
 
 Most of the world does not speak English. A quantized model can look fine on English benchmarks while it quietly loses a smaller language: in notebook 06, English calibration at equal memory cost Kazakh +14.3% perplexity against +0.9%.
@@ -158,6 +174,7 @@ We show on Qwen3 that choosing bits and calibration text by English instead of K
 > This is an **empirical study and an open tool**, not a brand-new algorithm. GPTQ ([arXiv:2210.17323](https://arxiv.org/abs/2210.17323)), expert pruning (e.g. REAP) and language-specific pruning exist already; see [related work](docs/prior-art.md).
 > Our contribution: Kazakh + Russian, measured against controls at equal memory, reproducible on free GPUs, and honest about losses.
 
+<a id="how"></a>
 ## ⚙️ How it works
 
 ```
@@ -174,6 +191,7 @@ kk + ru text ──► router statistics ──► which experts carry kk/ru tra
 - **Attention** stays at 8 bits and embeddings at 16 bits; experts hold almost all of the weights.
 - **Calibration never sees the exam.** Calibration is Wikipedia; the exam is KazMMLU and Belebele. A test in CI checks the separation.
 
+<a id="evaluation"></a>
 ## 🧪 Evaluation
 
 | Exam | What it measures | Size |
@@ -185,6 +203,7 @@ kk + ru text ──► router statistics ──► which experts carry kk/ru tra
 
 Every compressed model is compared **per question** with the original (paired bootstrap and McNemar test), and against a control with the same memory.
 
+<a id="notebooks"></a>
 ## 📓 Notebooks
 
 Notebooks 01–10 were run under the project's former name, LinguaPrune; each one installs the exact commit it used, so they still run unchanged.
@@ -205,6 +224,7 @@ Notebooks 01–10 were run under the project's former name, LinguaPrune; each on
 Notebooks are bilingual: English first, Russian below each text cell.
 To run one: *Open in Kaggle* → **Accelerator: GPU T4** and **Internet: On** → **Save Version → Save & Run All**. Results land in `/kaggle/working/results`.
 
+<a id="history"></a>
 ## 🧭 How we got here
 
 Each step answered one question and changed the plan. Negative results stay in; the full story with dates is in the [research log](docs/research-log.md).
@@ -417,6 +437,7 @@ Data: [`experiments/10/`](experiments/10/)
 </details>
 
 <a id="roadmap"></a>
+<a id="roadmap"></a>
 ## 🗺️ Roadmap
 
 ✅ done · 🔥 next · ⬜ planned
@@ -437,6 +458,7 @@ Data: [`experiments/10/`](experiments/10/)
 - ✅ `linguasqueeze compress` / `linguasqueeze evaluate`: calibrate, allocate bits, quantize, export and compare, for any language with text files
 - ⬜ Second language pair and a second MoE family
 
+<a id="limitations"></a>
 ## ⚠️ Limitations
 
 - The main result is one model (Qwen3-30B-A3B) and one seed; the first language pair is Kazakh + Russian. Do not read it as proof that every model or language gains equally.
@@ -482,6 +504,7 @@ python3 scripts/plot_qwen3_result.py   # redraws the figure above from experimen
 
 Expert pruning (REAP), language-specific expert studies, and the closest work: English calibration erodes Lithuanian under expert pruning ([arXiv:2611.07654](https://arxiv.org/abs/2611.07654)). We see the same effect for Kazakh under quantization. The comparison with each is in [docs/prior-art.md](docs/prior-art.md).
 
+<a id="paper"></a>
 ## 📄 Paper
 
 The study is available as a preprint (CC BY 4.0) in three languages. The English version is the original; the Russian and Kazakh versions are translations.
@@ -507,9 +530,10 @@ The study is available as a preprint (CC BY 4.0) in three languages. The English
 Akhmetova, S. (2026). LinguaSqueeze: Language-aware mixed-precision quantization of a Mixture-of-Experts LLM for Kazakh and Russian [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.24281161
 ```
 
+<a id="citation"></a>
 ## 📝 Citation
 
-<p align="center"><a href="#-citation"><img alt="Cite this repository" src="https://img.shields.io/badge/cite%20as-BibTeX%20%C2%B7%20APA-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a></p>
+<p align="center"><a href="#citation"><img alt="Cite this repository" src="https://img.shields.io/badge/cite%20as-BibTeX%20%C2%B7%20APA-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a></p>
 
 If you use LinguaSqueeze in your work, please cite it. Each block below has a copy button; on GitHub, **Cite this repository** in the sidebar gives the same from [`CITATION.cff`](CITATION.cff).
 
