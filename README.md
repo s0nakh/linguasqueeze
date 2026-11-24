@@ -437,26 +437,35 @@ Data: [`experiments/10/`](experiments/10/)
 </details>
 
 <a id="roadmap"></a>
-<a id="roadmap"></a>
 ## 🗺️ Roadmap
 
-✅ done · 🔥 next · ⬜ planned
+**Done**
 
-- ✅ 01–05 · Routing profile, pruning, physical removal, mixed precision, GPTQ on OLMoE
-- ✅ 06 · Qwen3-30B-A3B: at equal memory, English calibration costs Kazakh 16× more than kk+ru
-- ✅ 07 · **A real 15.24 GB file (4.0× smaller), kk/ru perplexity within 2%, scored from disk**
-- ✅ 08 · **The file runs in GPTQModel and answers in kk, ru and en**; perplexity matches notebook 07 within 0.1%
-- ✅ 09 · **Against 9 popular GGUF files: no popular file comes close at 15 GB (nearest +4.3% / +3.6% vs. our +1.3% / +0.4%); a tie at 17–18 GB**
-- ✅ 10 · At 2 bits a Kazakh+Russian calibration text cuts the Kazakh loss only from +18.9% to +15.1%; the bit allocation matters more ([log](docs/research-log.md#2026-11-14--10--does-the-calibration-language-matter-at-2-bits))
-- ✅ **Both files are public on Hugging Face** ([4/3-bit](https://huggingface.co/s0nakh/Qwen3-30B-A3B-Instruct-2507-kk-ru-GPTQ-4-3bit), [4-bit](https://huggingface.co/s0nakh/Qwen3-30B-A3B-Instruct-2507-kk-ru-GPTQ-4bit)) with model cards in English, Russian and Kazakh
-- 🔥 A language-aware ~2.5-bit file for 10–12 GB, where popular files lose 10–16% of Kazakh
-- 🔥 Our 4-bit file in the vLLM serving engine (a lossless repack into a format vLLM loads), compared with popular files in the same engine
-- 🔥 An exam on Kazakhstan's laws and official documents in kk and ru
-- ✅ 07b · Full KazMMLU (22,889 questions) for the original and both files: −1.8/−1.6 points (4/3-bit), −1.1/−0.4 (4-bit)
-- ✅ 07c · **The bit allocation matters**: at equal memory, 4 bits for the most-used experts cost +1.3% / +0.4% (kk/ru), random experts +3.5…+5.0% / +1.6…+4.1%, least-used +6.3% / +5.4%
-- ⬜ MERA
-- ✅ `linguasqueeze compress` / `linguasqueeze evaluate`: calibrate, allocate bits, quantize, export and compare, for any language with text files
-- ⬜ Second language pair and a second MoE family
+| # | Step | Result |
+|---|---|---|
+| 01–05 | Routing profile, pruning, mixed precision, GPTQ on OLMoE | the method, built on a small MoE |
+| 06 | Qwen3-30B-A3B: English vs. kk+ru at equal memory | English costs Kazakh **16×** more perplexity |
+| 07 | A real compressed file, scored from disk | **61.1 → 15.24 GB (4.0×)**, kk +1.3%, ru +0.4% |
+| 07b | Full KazMMLU (22,889 questions) | −1.8 / −1.6 points (4/3-bit), −1.1 / −0.4 (4-bit) |
+| 07c | Is it the bit allocation? | yes: most-used experts kk +1.3%, random +3.5…+5.0%, least-used +6.3% |
+| 08 | The file in GPTQModel | answers in kk, ru and en; perplexity matches 07 within 0.1% |
+| 09 | Against 9 popular GGUF files | ahead at ~15 GB (+1.3% vs. +4.3% for the nearest); a tie at 17–18 GB |
+| 10 | Calibration language at 2 bits | helps little (+18.9% → +15.1%); the allocation matters more ([log](docs/research-log.md#2026-11-14--10--does-the-calibration-language-matter-at-2-bits)) |
+| HF | Both files public on Hugging Face | [4/3-bit](https://huggingface.co/s0nakh/Qwen3-30B-A3B-Instruct-2507-kk-ru-GPTQ-4-3bit), [4-bit](https://huggingface.co/s0nakh/Qwen3-30B-A3B-Instruct-2507-kk-ru-GPTQ-4bit); cards in EN, RU, KK |
+| v0.8 | `linguasqueeze compress` / `evaluate` | any language from text files; run end to end on Qwen3-30B-A3B |
+| — | Calibration language and knowledge (Qwen3.6, 3-bit) | no difference: KazMMLU kk +0.4 [−1.1, +1.8] |
+| — | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] for the file compressed for kk+ru |
+
+**Next**
+
+| Status | Step |
+|---|---|
+| 🔥 now | A ~2.5-bit file for 10–12 GB, where popular files lose 10–16% of Kazakh |
+| ⬜ | Install with one command (PyPI) and a ready Kaggle notebook |
+| ⬜ | Our 4-bit file in the vLLM serving engine, compared with popular files in the same engine |
+| ⬜ | An exam on Kazakhstan's laws and official documents (kk, ru) |
+| ⬜ | MERA (Russian) |
+| ⬜ | A second language pair and a second MoE family |
 
 <a id="limitations"></a>
 ## ⚠️ Limitations
