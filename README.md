@@ -132,6 +132,8 @@ This is perplexity, i.e. how well each file keeps Kazakh and Russian text. Knowl
 
 <img src="assets/qwen3_result.png" alt="Perplexity growth for Kazakh and Russian per configuration" width="820">
 
+**Translation, not only perplexity.** Two 4/3-bit files of the same size written by `linguasqueeze compress`, English → Kazakh on FLORES-200 devtest (greedy, GPTQModel): the file compressed for Kazakh + Russian scores chrF 45.5, the file compressed for English 40.0 — **+5.5 [+3.9, +7.1]** on 136 sentences, rule fixed before the run. The language of the text decides both the calibration and which experts keep 4 bits; this is their combined effect. Data and every translation: [`experiments/translation/`](experiments/translation/).
+
 > [!IMPORTANT]
 > **The target was fixed before the run. Two of its three parts are met:** at least 3.5× smaller than 16-bit, and perplexity growth of at most 2% for both kk and ru. The third, no significant KazMMLU drop, is not met: on the full exam the 4/3-bit file loses 1.8 and 1.6 points.
 > At the same memory, choosing bits and calibration by English text costs Kazakh **16× more** (+14.3% vs. +0.9%).
@@ -439,7 +441,7 @@ Data: [`experiments/10/`](experiments/10/)
 
 - The main result is one model (Qwen3-30B-A3B) and one seed; the first language pair is Kazakh + Russian. Do not read it as proof that every model or language gains equally.
 - Compression is not lossless: on the full KazMMLU the 4/3-bit file loses 1.8 points in Kazakh and 1.6 in Russian.
-- The calibration language did not change knowledge. On Qwen3.6-35B-A3B with every expert at 3 bits (same size), Kazakh + Russian calibration against English calibration scored KazMMLU kk +0.4 points [−1.1, +1.8] on 3,000 questions and ru +1.8 [−0.2, +3.6] on 1,200 questions: no significant difference. The gain we measure is in how the model handles text in the language (perplexity), not in exam knowledge. Data: [`experiments/calibration-language/`](experiments/calibration-language/).
+- The calibration language did not change knowledge. On Qwen3.6-35B-A3B with every expert at 3 bits (same size), Kazakh + Russian calibration against English calibration scored KazMMLU kk +0.4 points [−1.1, +1.8] on 3,000 questions and ru +1.8 [−0.2, +3.6] on 1,200 questions: no significant difference. The gain we measure is in how the model handles text in the language (perplexity and translation quality), not in exam knowledge. Data: [`experiments/calibration-language/`](experiments/calibration-language/).
 - At 2 bits the calibration language helps little (Kazakh loss +18.9% → +15.1%, notebook 10); the bit allocation matters more.
 - Common fast runtimes cannot yet run different bit widths for experts of one layer. GPTQModel runs the file, slowly (about 1.6 tokens/s on two T4).
 - `compress` writes files for the Qwen3-MoE layout only; Qwen3.5/3.6-MoE can be scored with `evaluate` but not yet compressed. Dense (non-MoE) models are not supported.
