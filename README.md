@@ -34,11 +34,15 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 <a href="https://doi.org/10.5281/zenodo.24281161"><img alt="Paper" src="https://img.shields.io/badge/paper-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
 
-<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md"><img alt="research & full history" src="https://img.shields.io/badge/%F0%9F%93%9A_research_%26_full_history-open_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
-🇷🇺 [Русская версия](https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md) · 🇰🇿 [Қазақша нұсқасы](https://github.com/s0nakh/linguasqueeze/blob/main/README.kk.md) · [Research log](https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.md) · [Related work](https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.md)
+<p>🇷🇺 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md">Русская версия</a> · 🇰🇿 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.kk.md">Қазақша нұсқасы</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.md">Research log</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.md">Related work</a></p>
 
-<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Terminal: linguasqueeze compress and evaluate on Qwen3-30B-A3B" width="760"><br>
-<sub>The two commands on Qwen3-30B-A3B: verbatim output of our Kaggle T4 run, abridged (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 minutes shown in about 15 seconds; paths shortened.</sub>
+<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md"><img alt="research & full history" src="https://img.shields.io/badge/%F0%9F%93%9A_research_%26_full_history-open_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
+
+<br>
+
+<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Terminal: linguasqueeze compress and evaluate on Qwen3-30B-A3B" width="760">
+
+<p><sub>The two commands on Qwen3-30B-A3B: verbatim output of our Kaggle T4 run, abridged (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 minutes shown in about 15 seconds; paths shortened.</sub></p>
 
 </div>
 
@@ -139,8 +143,6 @@ A tool that helps a small team compress a large model for its own language on af
 - **Any language** — Kazakh, Uzbek, Arabic, Hindi, Ukrainian, Vietnamese: all you need is text in your language. Quality has been measured for Kazakh and Russian so far.
 
 > **Why:** compression is usually judged by size and speed. LinguaSqueeze also shows what happened to your language after compression.
-
-
 
 <a id="roadmap"></a>
 ## 🗺️ Roadmap

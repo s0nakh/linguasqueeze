@@ -34,11 +34,15 @@
 <a href="https://doi.org/10.5281/zenodo.24281163"><img alt="Paper" src="https://img.shields.io/badge/%D1%81%D1%82%D0%B0%D1%82%D1%8C%D1%8F-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
 
-<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md"><img alt="исследование и полная история" src="https://img.shields.io/badge/%F0%9F%93%9A_%D0%B8%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D0%BF%D0%BE%D0%BB%D0%BD%D0%B0%D1%8F_%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D1%8F-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8C_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
-🇬🇧 [English](https://github.com/s0nakh/linguasqueeze/blob/main/README.md) · 🇰🇿 [Қазақша](https://github.com/s0nakh/linguasqueeze/blob/main/README.kk.md) · [Исследовательский журнал](https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.ru.md) · [Связанные работы](https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.ru.md)
+<p>🇬🇧 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.md">English</a> · 🇰🇿 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.kk.md">Қазақша</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.ru.md">Исследовательский журнал</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.ru.md">Связанные работы</a></p>
 
-<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Терминал: linguasqueeze compress и evaluate на Qwen3-30B-A3B" width="760"><br>
-<sub>Две команды на Qwen3-30B-A3B: дословный вывод нашего прогона на Kaggle T4 с сокращениями (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 минуты показаны примерно за 15 секунд; пути сокращены.</sub>
+<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md"><img alt="исследование и полная история" src="https://img.shields.io/badge/%F0%9F%93%9A_%D0%B8%D1%81%D1%81%D0%BB%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5_%D0%B8_%D0%BF%D0%BE%D0%BB%D0%BD%D0%B0%D1%8F_%D0%B8%D1%81%D1%82%D0%BE%D1%80%D0%B8%D1%8F-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8C_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
+
+<br>
+
+<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Терминал: linguasqueeze compress и evaluate на Qwen3-30B-A3B" width="760">
+
+<p><sub>Две команды на Qwen3-30B-A3B: дословный вывод нашего прогона на Kaggle T4 с сокращениями (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 минуты показаны примерно за 15 секунд; пути сокращены.</sub></p>
 
 </div>
 
@@ -139,8 +143,6 @@ KazMMLU ru:        -1.6 pts
 - **Любому языку** — казахский, узбекский, арабский, хинди, украинский, вьетнамский: нужен только текст на своём языке. Качество пока измерено для казахского и русского.
 
 > **Зачем:** сжатие обычно оценивают по размеру и скорости. LinguaSqueeze показывает ещё и то, что после сжатия случилось с вашим языком.
-
-
 
 <a id="roadmap"></a>
 ## 🗺️ Дорожная карта

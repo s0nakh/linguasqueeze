@@ -34,11 +34,15 @@
 <a href="https://doi.org/10.5281/zenodo.24281169"><img alt="Paper" src="https://img.shields.io/badge/%D0%BC%D0%B0%D2%9B%D0%B0%D0%BB%D0%B0-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
 
-<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md"><img alt="зерттеу және толық тарих" src="https://img.shields.io/badge/%F0%9F%93%9A_%D0%B7%D0%B5%D1%80%D1%82%D1%82%D0%B5%D1%83_%D0%B6%D3%99%D0%BD%D0%B5_%D1%82%D0%BE%D0%BB%D1%8B%D2%9B_%D1%82%D0%B0%D1%80%D0%B8%D1%85-%D0%B0%D1%88%D1%83_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
-🇬🇧 [English](https://github.com/s0nakh/linguasqueeze/blob/main/README.md) · 🇷🇺 [Русский](https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md) · [Зерттеу журналы](https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.md) · [Байланысты жұмыстар](https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.kk.md)
+<p>🇬🇧 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.md">English</a> · 🇷🇺 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md">Русский</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.md">Зерттеу журналы</a> · <a href="https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.kk.md">Байланысты жұмыстар</a></p>
 
-<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Терминал: Qwen3-30B-A3B-де linguasqueeze compress және evaluate" width="760"><br>
-<sub>Qwen3-30B-A3B-дегі екі пәрмен: Kaggle T4-тегі біздің іске қосудың сөзбе-сөз шығысы, қысқартылған (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 минут шамамен 15 секундта көрсетілген; жолдар қысқартылған.</sub>
+<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md"><img alt="зерттеу және толық тарих" src="https://img.shields.io/badge/%F0%9F%93%9A_%D0%B7%D0%B5%D1%80%D1%82%D1%82%D0%B5%D1%83_%D0%B6%D3%99%D0%BD%D0%B5_%D1%82%D0%BE%D0%BB%D1%8B%D2%9B_%D1%82%D0%B0%D1%80%D0%B8%D1%85-%D0%B0%D1%88%D1%83_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
+
+<br>
+
+<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Терминал: Qwen3-30B-A3B-де linguasqueeze compress және evaluate" width="760">
+
+<p><sub>Qwen3-30B-A3B-дегі екі пәрмен: Kaggle T4-тегі біздің іске қосудың сөзбе-сөз шығысы, қысқартылған (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 минут шамамен 15 секундта көрсетілген; жолдар қысқартылған.</sub></p>
 
 </div>
 
@@ -139,8 +143,6 @@ KazMMLU ru:        -1.6 pts
 - **Кез келген тілге** — қазақ, өзбек, араб, хинди, украин, вьетнам тілдері: тек өз тіліңіздегі мәтін керек. Сапа әзірге қазақ және орыс тілдері үшін өлшенген.
 
 > **Не үшін:** сығуды әдетте өлшемі мен жылдамдығы бойынша бағалайды. LinguaSqueeze сығудан кейін тіліңізбен не болғанын да көрсетеді.
-
-
 
 <a id="roadmap"></a>
 ## 🗺️ Жол картасы
