@@ -23,7 +23,7 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-39FF14?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.6%2B-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
 <a href="https://github.com/huggingface/transformers"><img alt="Transformers" src="https://img.shields.io/badge/Transformers-5.x-FFD21E?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
-<a href="https://www.kaggle.com/"><img alt="Kaggle" src="https://img.shields.io/badge/Kaggle-free%20T4-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a>
+<a href="https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart"><img alt="Kaggle" src="https://img.shields.io/badge/Kaggle-free%20T4-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a>
 </p>
 <p>
 <a href="https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"><img alt="Model" src="https://img.shields.io/badge/model-Qwen3--30B--A3B-F0529C?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
@@ -91,6 +91,10 @@ linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 Requires Python 3.10+ and PyTorch 2.6+ (Linux, Windows, Apple-silicon Macs, Kaggle); PyTorch no longer ships 2.6 for Intel Macs.
+
+Prefer a browser? The same two commands on the real 61 GB model, ready to run on a free Kaggle T4 (about 1.5 h; our run reproduced the published numbers exactly):
+
+<p><a href="https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart"><img alt="▶ run on Kaggle" src="https://img.shields.io/badge/%E2%96%B6_run_on_Kaggle-free_T4_%C2%B7_one_click-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a></p>
 
 ```bash
 export MODEL="./Qwen3-30B-A3B-Instruct-2507"
@@ -171,13 +175,13 @@ A tool that helps a small team compress a large model for its own language on af
 | ✅ — | Calibration language and knowledge (Qwen3.6, 3-bit) | no difference: KazMMLU kk +0.4 [−1.1, +1.8] |
 | ✅ — | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] for the file compressed for kk+ru |
 | ✅ v0.8.2 | `pip install linguasqueeze` | on [PyPI](https://pypi.org/project/linguasqueeze/), published from a version tag by GitHub Actions |
+| ✅ Kaggle | Notebook: compress for your language in one click | [quick start on a free T4](https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart), reproduces `experiments/cli` exactly |
 
 **🚀 Next**
 
 | 🚦 Status | 🧭 Step |
 |---|---|
 | 🔥 now | A ~2.5-bit file for 10–12 GB, where popular files lose 10–12% of Kazakh |
-| ⬜ | A ready Kaggle notebook: compress a model for your language in one click |
 | ⬜ | Our 4-bit file in the vLLM serving engine, compared with popular files in the same engine |
 | ⬜ | An exam on Kazakhstan's laws and official documents (kk, ru) |
 | ⬜ | MERA (Russian) |

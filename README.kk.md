@@ -23,7 +23,7 @@
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-39FF14?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.6%2B-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
 <a href="https://github.com/huggingface/transformers"><img alt="Transformers" src="https://img.shields.io/badge/Transformers-5.x-FFD21E?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
-<a href="https://www.kaggle.com/"><img alt="Kaggle" src="https://img.shields.io/badge/Kaggle-free%20T4-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a>
+<a href="https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart"><img alt="Kaggle" src="https://img.shields.io/badge/Kaggle-free%20T4-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a>
 </p>
 <p>
 <a href="https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"><img alt="Model" src="https://img.shields.io/badge/model-Qwen3--30B--A3B-F0529C?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
@@ -91,6 +91,10 @@ linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 Python 3.10+ және PyTorch 2.6+ қажет (Linux, Windows, Apple silicon негізіндегі Mac, Kaggle); Intel процессорлы Mac үшін PyTorch 2.6 шығарылмайды.
+
+Браузерде ыңғайлырақ па? Сол екі пәрмен 61 ГБ нақты модельде, Kaggle-дегі тегін T4-те іске қосуға дайын (шамамен 1,5 сағ; біздің іске қосу жарияланған сандарды дәлме-дәл қайталады):
+
+<p><a href="https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart"><img alt="▶ Kaggle-де іске қосу" src="https://img.shields.io/badge/%E2%96%B6_Kaggle--%D0%B4%D0%B5_%D1%96%D1%81%D0%BA%D0%B5_%D2%9B%D0%BE%D1%81%D1%83-%D1%82%D0%B5%D0%B3%D1%96%D0%BD_T4_%C2%B7_%D0%B1%D1%96%D1%80_%D0%B1%D0%B0%D1%81%D1%83-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a></p>
 
 ```bash
 export MODEL="./Qwen3-30B-A3B-Instruct-2507"
@@ -171,13 +175,13 @@ KazMMLU ru:        -1.6 pts
 | ✅ — | Калибрлеу тілі және білім (Qwen3.6, 3 бит) | айырма жоқ: KazMMLU kk +0,4 [−1,1; +1,8] |
 | ✅ — | Ағылшын тілінен қазақ тіліне аударма, өлшемі бірдей | kk+ru-ға қарай сығылған файлда **+5,5 chrF** [+3,9; +7,1] |
 | ✅ v0.8.2 | `pip install linguasqueeze` | [PyPI](https://pypi.org/project/linguasqueeze/)-де, GitHub Actions арқылы нұсқа тегінен жарияланады |
+| ✅ Kaggle | Ноутбук: өз тіліңізге бір басумен сығу | [тегін T4-те жылдам бастау](https://www.kaggle.com/code/sophieda/linguasqueeze-quickstart), `experiments/cli`-ді дәлме-дәл қайталайды |
 
 **🚀 Әрі қарай**
 
 | 🚦 Күйі | 🧭 Қадам |
 |---|---|
 | 🔥 қазір | Танымал файлдар қазақ тілінің 10–12%-ын жоғалтатын 10–12 ГБ-қа арналған ~2,5 биттік файл |
-| ⬜ | Kaggle-дегі дайын ноутбук: модельді өз тіліңізге бір басумен сығу |
 | ⬜ | Біздің 4 биттік файл vLLM қозғалтқышында, сол қозғалтқыштағы танымал файлдармен салыстыру |
 | ⬜ | Қазақстанның заңдары мен ресми құжаттары бойынша емтихан (kk, ru) |
 | ⬜ | MERA (орыс тілі) |
