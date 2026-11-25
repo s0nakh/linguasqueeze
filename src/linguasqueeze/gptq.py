@@ -127,6 +127,17 @@ def gptq_quantize(weight: torch.Tensor, hessian: torch.Tensor, bits: int, group_
     return gptq_quantize_batched(weight.unsqueeze(0), hessian.unsqueeze(0), bits, group_size, damp, block_size)[0]
 
 
+def route(mlp: nn.Module, x: torch.Tensor):
+    """The router's (logits, weights, chosen experts) for tokens x; routers with a correction bias (hy_v3) take it as input."""
+    bias = getattr(mlp, "e_score_correction_bias", None)
+    return mlp.gate(x) if bias is None else mlp.gate(x, bias)
+
+
+def is_moe(layer: nn.Module) -> bool:
+    """False for the dense MLP layers some MoE models keep (e.g. the first layer of Hy-MT3)."""
+    return hasattr(layer.mlp, "experts")
+
+
 def _capture_moe_inputs(layer: nn.Module, inputs: Callable[[], Iterator[tuple[torch.Tensor, torch.Tensor]]],
                         run_layer: Callable[[torch.Tensor, torch.Tensor], torch.Tensor]) -> list[torch.Tensor]:
     """Inputs of the MoE block for every real (non-padding) calibration token, per batch: [tokens, hidden]."""
@@ -147,7 +158,7 @@ def _capture_moe_inputs(layer: nn.Module, inputs: Callable[[], Iterator[tuple[to
 
 
 @torch.no_grad()
-def _expert_hessians(xs: list[torch.Tensor], gate: nn.Module, experts: nn.Module,
+def _expert_hessians(xs: list[torch.Tensor], mlp: nn.Module, experts: nn.Module,
                      stage: str) -> tuple[list[torch.Tensor], np.ndarray]:
     """Per-expert H = XᵀX (stage 'gate_up': MoE input; stage 'down': act(gate)·up of that input).
     Products are computed on the experts' device but kept in CPU memory: 256 experts × 2048² float32 is 4.3 GB,
@@ -159,7 +170,7 @@ def _expert_hessians(xs: list[torch.Tensor], gate: nn.Module, experts: nn.Module
     counts = np.zeros(num_experts, dtype=np.int64)
     for x in xs:
         x = x.to(device)
-        _, _, chosen = gate(x)
+        _, _, chosen = route(mlp, x)
         for e in torch.unique(chosen).tolist():
             tokens = x[(chosen == e).any(dim=1)].float()
             if stage == "down":
@@ -189,11 +200,13 @@ def quantize_layer_gptq_(layer: nn.Module, expert_bits: np.ndarray, inputs, run_
             proj.weight.copy_(q)
             if record is not None:
                 record["attention"][name] = (attention_bits, scale, zero)
-    gate, experts = layer.mlp.gate, layer.mlp.experts
+    if not is_moe(layer):  # dense MLP layer: attention only; the MLP stays at full precision
+        return {"tokens_per_expert": [], "rtn_fallback_experts": 0}
+    experts = layer.mlp.experts
     xs = _capture_moe_inputs(layer, inputs, run_layer)
     stats = {}
     for stage, param in (("gate_up", experts.gate_up_proj), ("down", experts.down_proj)):
-        hessians, counts = _expert_hessians(xs, gate, experts, stage)
+        hessians, counts = _expert_hessians(xs, layer.mlp, experts, stage)
         for bits in sorted(set(int(b) for b in expert_bits)):
             if bits >= NO_QUANT_BITS:
                 continue
@@ -220,10 +233,12 @@ def quantize_layer_gptq_(layer: nn.Module, expert_bits: np.ndarray, inputs, run_
 @torch.no_grad()
 def router_traffic(layer: nn.Module, inputs, run_layer) -> np.ndarray:
     """How many calibration tokens the router sends to each expert of this layer (top-k picks)."""
+    if not is_moe(layer):
+        return np.zeros(0, dtype=np.int64)
     num_experts = layer.mlp.gate.weight.shape[0]
     counts = np.zeros(num_experts, dtype=np.int64)
     for x in _capture_moe_inputs(layer, inputs, run_layer):
-        _, _, chosen = layer.mlp.gate(x)
+        _, _, chosen = route(layer.mlp, x)
         counts += np.bincount(chosen.reshape(-1).cpu().numpy(), minlength=num_experts)
     return counts
 
@@ -255,7 +270,7 @@ def make_quantization_prepare(streamed, plans: dict[str, dict], group_size: int 
                 for name in ATTENTION_PROJECTIONS:
                     proj = getattr(layer.self_attn, name)
                     proj.weight.copy_(fake_quantize(proj.weight, attention_bits, group_size))
-            for param in (layer.mlp.experts.gate_up_proj, layer.mlp.experts.down_proj):
+            for param in ((layer.mlp.experts.gate_up_proj, layer.mlp.experts.down_proj) if is_moe(layer) else ()):
                 for e, b in enumerate(bits):
                     param[e].copy_(fake_quantize(param[e], int(b), group_size))
         elif plan["method"] == "gptq":

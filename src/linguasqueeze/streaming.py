@@ -21,6 +21,12 @@ import torch
 from torch import nn
 
 FUSED_EXPERT_PARAMS = ("mlp.experts.gate_up_proj", "mlp.experts.down_proj")
+# Checkpoints whose tensor names differ from the transformers-5 module names (same renames as transformers'
+# conversion_mapping.py): module name fragment -> checkpoint name fragment, tried when the module name is absent.
+CHECKPOINT_RENAMES = {
+    "hy_v3": (("mlp.gate.weight", "mlp.router.gate.weight"), ("mlp.e_score_correction_bias", "mlp.expert_bias"),
+              ("mlp.shared_experts.", "mlp.shared_mlp.")),
+}
 
 
 @dataclass(frozen=True)
@@ -58,18 +64,33 @@ class CheckpointReader:
         self._safe_open = safe_open
         self._handles: dict[str, object] = {}
         config_path = self.model_dir / "config.json"
-        quant = json.loads(config_path.read_text()).get("quantization_config", {}) if config_path.exists() else {}
-        self.checkpoint_format = quant.get("checkpoint_format", "gptq")
+        config = json.loads(config_path.read_text()) if config_path.exists() else {}
+        self.checkpoint_format = config.get("quantization_config", {}).get("checkpoint_format", "gptq")
+        self.renames = CHECKPOINT_RENAMES.get(config.get("model_type", ""), ())
 
-    def __contains__(self, key: str) -> bool:
+    def _stored(self, key: str) -> bool:
         from linguasqueeze.export import quantized_base
 
         return key in self.weight_map or quantized_base(key, self.weight_map) is not None
+
+    def resolve(self, key: str) -> str:
+        """The checkpoint name of a module tensor: the name itself, or its renamed form for checkpoints such as hy_v3."""
+        if self._stored(key):
+            return key
+        for module_part, checkpoint_part in self.renames:
+            renamed = key.replace(module_part, checkpoint_part)
+            if renamed != key and self._stored(renamed):
+                return renamed
+        return key
+
+    def __contains__(self, key: str) -> bool:
+        return self._stored(self.resolve(key))
 
     def get(self, key: str) -> torch.Tensor:
         """A tensor by name; `x.weight` of a GPTQ-quantized module is returned dequantized (float32)."""
         from linguasqueeze.export import GPTQ_SUFFIXES, from_gptq, quantized_base
 
+        key = self.resolve(key)
         if key not in self.weight_map:
             base = quantized_base(key, self.weight_map)
             if base is None:
@@ -101,9 +122,14 @@ def _checkpoint_tensor(reader: CheckpointReader, full_name: str, num_experts: in
 
 def read_module_state(module: nn.Module, prefix: str, reader: CheckpointReader,
                       num_experts: int, dtype: torch.dtype) -> dict[str, torch.Tensor]:
-    """CPU tensors for every parameter of `module`, read from the checkpoint under `prefix`."""
-    return {name: _checkpoint_tensor(reader, f"{prefix}{name}", num_experts).to(dtype)
-            for name, _ in module.named_parameters()}
+    """CPU tensors for every parameter of `module`, and for every buffer the checkpoint stores (e.g. the router
+    correction bias of hy_v3), read from the checkpoint under `prefix`. Buffers keep their own dtype."""
+    state = {name: _checkpoint_tensor(reader, f"{prefix}{name}", num_experts).to(dtype)
+             for name, _ in module.named_parameters()}
+    for name, buffer in module.named_buffers():
+        if f"{prefix}{name}" in reader:
+            state[name] = reader.get(f"{prefix}{name}").to(buffer.dtype)
+    return state
 
 
 def materialize_(module: nn.Module, state: dict[str, torch.Tensor], device: torch.device) -> None:
@@ -112,6 +138,9 @@ def materialize_(module: nn.Module, state: dict[str, torch.Tensor], device: torc
     with torch.no_grad():
         for name, param in module.named_parameters():
             param.copy_(state[name])
+        for name, buffer in module.named_buffers():
+            if name in state:
+                buffer.copy_(state[name])
 
 
 class StreamedModel:

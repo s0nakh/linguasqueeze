@@ -177,12 +177,12 @@ class GPTQCheckpointWriter:
         tensors: dict[str, torch.Tensor] = {}
         for name, entry in record["attention"].items():
             self._add_linear(tensors, f"{prefix}self_attn.{name}", getattr(layer.self_attn, name).weight, entry)
-        experts = layer.mlp.experts
-        num_experts = experts.gate_up_proj.shape[0]
+        experts = getattr(layer.mlp, "experts", None)  # None: a dense MLP layer, copied unchanged
+        num_experts = experts.gate_up_proj.shape[0] if experts is not None else 0
         missing = [e for e in range(num_experts) if e not in record["gate_up"] or e not in record["down"]]
         if missing:
             raise ValueError(f"layer {index}: experts {missing[:5]}... were not quantized; cannot export")
-        intermediate = experts.down_proj.shape[2]
+        intermediate = experts.down_proj.shape[2] if experts is not None else 0
         for e in range(num_experts):
             bits, scale, zero = record["gate_up"][e]
             fused = experts.gate_up_proj[e]
@@ -194,8 +194,9 @@ class GPTQCheckpointWriter:
             self._add_linear(tensors, base + "down_proj", experts.down_proj[e], record["down"][e])
         quantized = {f"self_attn.{n}.weight" for n in record["attention"]} | {"mlp.experts.gate_up_proj",
                                                                               "mlp.experts.down_proj"}
-        for name, _ in layer.named_parameters():
-            if name not in quantized:  # norms, router gate: copied unchanged from the original checkpoint
+        stored_buffers = [name for name, _ in layer.named_buffers() if prefix + name in self.source]
+        for name in [name for name, _ in layer.named_parameters()] + stored_buffers:
+            if name not in quantized:  # norms, router gate and bias, shared experts: copied unchanged from the original
                 tensors[prefix + name] = self.source.get(prefix + name).contiguous()
         self.layer_bits[index] = [int(record["gate_up"][e][0]) for e in range(num_experts)]
         self._save(tensors, f"model-layer-{index:03d}.safetensors")
