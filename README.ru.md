@@ -62,7 +62,7 @@
 |---|---|---|---|
 | ✅ | Размер файла | **61,1 → 15,24 ГБ (в 4,0 раза меньше)** | [ноутбук 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
 | ✅ | Казахский / русский текст (рост перплексии) | **+1,3% / +0,4%** | [ноутбук 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Если калибровать на английском, тот же размер | казахскому **в 16 раз хуже** (+14,3% против +0,9%) | [ноутбук 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
+| ✅ | Биты и калибровка выбраны по английскому тексту, тот же размер | казахскому **в 16 раз хуже** (+14,3% против +0,9%) | [ноутбук 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
 | ✅ | Тот же размер, но 4 бита получают случайные или самые редкие эксперты | казахский +3,5…+5,0% (случайные) и +6,3% (редкие) против **+1,3%** | [ноутбук 07c](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *сим.* |
 | ✅ | Перевод с английского на казахский, тот же размер | **+5,5 chrF** [+3,9; +7,1] к файлу, сжатому под английский | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
 | ✅ | Популярные файлы GGUF около 15 ГБ | ближайший: казахский +4,3%; наш **+1,3%** | [ноутбук 09](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |

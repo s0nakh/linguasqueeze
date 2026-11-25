@@ -62,7 +62,7 @@
 |---|---|---|---|
 | ✅ | Файл өлшемі | **61,1 → 15,24 ГБ (4,0 есе кіші)** | [07 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
 | ✅ | Қазақ / орыс мәтіні (перплексия өсуі) | **+1,3% / +0,4%** | [07 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Ағылшын тілінде калибрлесе, өлшемі бірдей | қазақ тіліне **16 есе нашар** (+14,3%, біздікі +0,9%) | [06 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
+| ✅ | Биттер мен калибрлеу ағылшын мәтіні бойынша таңдалса, өлшемі бірдей | қазақ тіліне **16 есе нашар** (+14,3%, біздікі +0,9%) | [06 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
 | ✅ | Өлшемі бірдей, бірақ 4 бит кездейсоқ немесе ең сирек сарапшыларға берілсе | қазақ тілі +3,5…+5,0% (кездейсоқ) және +6,3% (сирек), біздікі **+1,3%** | [07c ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *сим.* |
 | ✅ | Ағылшын тілінен қазақ тіліне аударма, өлшемі бірдей | ағылшын тіліне қарай сығылған файлдан **+5,5 chrF** [+3,9; +7,1] | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
 | ✅ | Шамамен 15 ГБ танымал GGUF файлдары | ең жақыны: қазақ тілі +4,3%; біздікі **+1,3%** | [09 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |

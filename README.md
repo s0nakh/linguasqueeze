@@ -62,7 +62,7 @@ Each row links to the notebook and data behind it. Rows marked *sim.* use simula
 |---|---|---|---|
 | ✅ | File size | **61.1 → 15.24 GB (4.0× smaller)** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
 | ✅ | Kazakh / Russian text (perplexity growth) | **+1.3% / +0.4%** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Calibrating on English instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | [notebook 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *sim.* |
+| ✅ | Bits and calibration chosen by English text instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | [notebook 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *sim.* |
 | ✅ | Same size, but 4 bits go to random or least-used experts | Kazakh +3.5…+5.0% (random) and +6.3% (least-used) vs. **+1.3%** | [notebook 07c](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *sim.* |
 | ✅ | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] vs. the file compressed for English | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
 | ✅ | Popular GGUF files at ~15 GB | nearest: Kazakh +4.3%; ours **+1.3%** | [notebook 09](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
