@@ -50,27 +50,27 @@
 
 ### 🧭 С чего начать
 
-1. 📊 **Результат за 2 минуты** — [таблица доказательств](#result)
-2. 🔁 **Повторить** — [`pip install linguasqueeze` и две команды](#quick-start); наш прогон: [experiments/cli](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/)
-3. 📚 **Полная история исследования** — [ноутбуки 01–10, контрольные опыты, отрицательные результаты](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md)
+| 📊 **Результат за 2 минуты** | 🔁 **Повторить самому** | 📚 **Вся история** |
+|:---:|:---:|:---:|
+| <a href="#result">таблица доказательств</a> | <a href="#quick-start"><code>pip install</code> и две команды</a> | <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md">ноутбуки 01–10, контрольные опыты</a> |
 
-**Содержание:** [Результаты](#result) · [Как это работает](#how) · [Быстрый старт](#quick-start) · [Для кого](#who) · [Дорожная карта](#roadmap) · [Ограничения](#limitations) · [Исследование](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md) · [Цитирование](#citation)
+<p align="center"><b>Содержание:</b><br><a href="#result">📊 Результаты</a> &nbsp;·&nbsp; <a href="#how">⚙️ Как это работает</a> &nbsp;·&nbsp; <a href="#quick-start">🚀 Быстрый старт</a> &nbsp;·&nbsp; <a href="#who">👥 Для кого</a> &nbsp;·&nbsp; <a href="#roadmap">🗺️ Дорожная карта</a> &nbsp;·&nbsp; <a href="#limitations">⚠️ Ограничения</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.ru.md">📚 Исследование</a> &nbsp;·&nbsp; <a href="#citation">📝 Цитирование</a></p>
 
 <a id="result"></a>
 <a id="evaluation"></a>
 ## 📊 Доказано на Qwen3-30B-A3B
 
-У каждой строки указан ноутбук и данные. Строки с пометкой *сим.* получены при имитации квантования с тем же распределением бит и той же калибровкой, что и у записанного файла; остальные строки измерены по сжатому файлу с диска.
+У каждой строки указан ноутбук и данные. Строки с пометкой **имитация** получены при имитации квантования с тем же распределением бит и той же калибровкой, что и у записанного файла; остальные строки измерены по сжатому файлу с диска.
 
-|  | Что измеряли | Результат | Источник |
+|  | 🔬 Что измеряли | 📈 Результат | 📎 Источник |
 |---|---|---|---|
-| ✅ | Размер файла | **61,1 → 15,24 ГБ (в 4,0 раза меньше)** | [ноутбук 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Казахский / русский текст (рост перплексии) | **+1,3% / +0,4%** | [ноутбук 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Биты и калибровка выбраны по английскому тексту, тот же размер | казахскому **в 16 раз хуже** (+14,3% против +0,9%) | [ноутбук 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
-| ✅ | Тот же размер, но 4 бита получают случайные или самые редкие эксперты | казахский +3,5…+5,0% (случайные) и +6,3% (редкие) против **+1,3%** | [ноутбук 07c](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *сим.* |
-| ✅ | Перевод с английского на казахский, тот же размер | **+5,5 chrF** [+3,9; +7,1] к файлу, сжатому под английский | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
-| ✅ | Популярные файлы GGUF около 15 ГБ | ближайший: казахский +4,3%; наш **+1,3%** | [ноутбук 09](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
-| ⚠️ | Знания, полный KazMMLU (22 889 вопросов) | −1,8 / −1,6 пункта (kk / ru) | [ноутбук 07b](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
+| ✅ | Размер файла | **61,1 → 15,24 ГБ (в 4,0 раза меньше)** | [![ноутбук 07](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Казахский / русский текст (рост перплексии) | **+1,3% / +0,4%** | [![ноутбук 07](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Биты и калибровка выбраны по английскому тексту, тот же размер | казахскому **в 16 раз хуже** (+14,3% против +0,9%) | [![ноутбук 06](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-06-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb) ![имитация](https://img.shields.io/badge/%D0%B8%D0%BC%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F-8B949E?style=flat-square) |
+| ✅ | Тот же размер, но 4 бита получают случайные или самые редкие эксперты | казахский +3,5…+5,0% (случайные) и +6,3% (редкие) против **+1,3%** | [![ноутбук 07c](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07c-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb) ![имитация](https://img.shields.io/badge/%D0%B8%D0%BC%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F-8B949E?style=flat-square) |
+| ✅ | Перевод с английского на казахский, тот же размер | **+5,5 chrF** [+3,9; +7,1] к файлу, сжатому под английский | [![данные](https://img.shields.io/badge/%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-translation-00BFFF?style=flat-square&labelColor=0D1117&logo=databricks&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
+| ✅ | Популярные файлы GGUF около 15 ГБ | ближайший: казахский +4,3%; наш **+1,3%** | [![ноутбук 09](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-09-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
+| ⚠️ | Знания, полный KazMMLU (22 889 вопросов) | −1,8 / −1,6 пункта (kk / ru) | [![ноутбук 07b](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07b-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
 
 <a id="how"></a>
 ## ⚙️ Как это работает
@@ -91,19 +91,24 @@ linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 ```bash
-# 1. compress: калибровка на вашем языке; эксперты, на которых приходится 90% его трафика, получают 4 бита, остальные 3
-linguasqueeze compress \
-  --model ./Qwen3-30B-A3B-Instruct-2507 \
-  --calibration-data kazakh.txt russian.txt \
-  --bits 4,3 \
-  --output ./qwen3-30b-kk-ru
+export MODEL="./Qwen3-30B-A3B-Instruct-2507"
+export OUT="./qwen3-30b-kk-ru"
 
-# 2. evaluate: одни и те же вопросы для обеих моделей; каждая цифра сжатой модели — из её файлов
+# 1. compress — калибровка на текстах вашего языка;
+#    эксперты с 90% его трафика получают 4 бита, остальные 3
+linguasqueeze compress \
+  --model "$MODEL" \
+  --calibration-data "kazakh.txt" "russian.txt" \
+  --bits 4,3 \
+  --output "$OUT"
+
+# 2. evaluate — одни и те же вопросы для обеих моделей;
+#    каждая цифра сжатой модели — из её файлов
 linguasqueeze evaluate \
-  --original ./Qwen3-30B-A3B-Instruct-2507 \
-  --compressed ./qwen3-30b-kk-ru \
-  --text kk=kazakh_test.txt --text ru=russian_test.txt \
-  --exam --report report.json
+  --original "$MODEL" \
+  --compressed "$OUT" \
+  --text "kk=kazakh_test.txt" --text "ru=russian_test.txt" \
+  --exam --report "report.json"
 ```
 
 Файлы для калибровки и проверки — обычный текст UTF-8, документы разделены пустой строкой. Команда принимает текст на любом языке; качество измерено только для казахского и русского.

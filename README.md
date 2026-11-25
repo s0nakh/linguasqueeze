@@ -50,27 +50,27 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 
 ### 🧭 Start here
 
-1. 📊 **The result in 2 minutes** — [the proof table](https://github.com/s0nakh/linguasqueeze#result)
-2. 🔁 **Reproduce it** — [`pip install linguasqueeze` and two commands](https://github.com/s0nakh/linguasqueeze#quick-start); our run: [experiments/cli](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/)
-3. 📚 **The full research history** — [notebooks 01–10, controls, negative results](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md)
+| 📊 **The result in 2 minutes** | 🔁 **Reproduce it** | 📚 **The full history** |
+|:---:|:---:|:---:|
+| <a href="https://github.com/s0nakh/linguasqueeze#result">the proof table</a> | <a href="https://github.com/s0nakh/linguasqueeze#quick-start"><code>pip install</code> and two commands</a> | <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md">notebooks 01–10, controls</a> |
 
-**Contents:** [Results](https://github.com/s0nakh/linguasqueeze#result) · [How it works](https://github.com/s0nakh/linguasqueeze#how) · [Quick start](https://github.com/s0nakh/linguasqueeze#quick-start) · [Who it is for](https://github.com/s0nakh/linguasqueeze#who) · [Roadmap](https://github.com/s0nakh/linguasqueeze#roadmap) · [Limitations](https://github.com/s0nakh/linguasqueeze#limitations) · [Research](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md) · [Citation](https://github.com/s0nakh/linguasqueeze#citation)
+<p align="center"><b>Contents:</b><br><a href="https://github.com/s0nakh/linguasqueeze#result">📊 Results</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#how">⚙️ How it works</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#quick-start">🚀 Quick start</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#who">👥 Who it is for</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#roadmap">🗺️ Roadmap</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#limitations">⚠️ Limitations</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md">📚 Research</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze#citation">📝 Citation</a></p>
 
 <a id="result"></a>
 <a id="evaluation"></a>
 ## 📊 Proven on Qwen3-30B-A3B
 
-Each row links to the notebook and data behind it. Rows marked *sim.* use simulated quantization with the same bit allocation and calibration as the written file; all other rows are scored from the compressed file on disk.
+Each row links to the notebook and data behind it. Rows marked **simulated** use simulated quantization with the same bit allocation and calibration as the written file; all other rows are scored from the compressed file on disk.
 
-|  | What we measured | Result | Source |
+|  | 🔬 What we measured | 📈 Result | 📎 Source |
 |---|---|---|---|
-| ✅ | File size | **61.1 → 15.24 GB (4.0× smaller)** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Kazakh / Russian text (perplexity growth) | **+1.3% / +0.4%** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Bits and calibration chosen by English text instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | [notebook 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *sim.* |
-| ✅ | Same size, but 4 bits go to random or least-used experts | Kazakh +3.5…+5.0% (random) and +6.3% (least-used) vs. **+1.3%** | [notebook 07c](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *sim.* |
-| ✅ | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] vs. the file compressed for English | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
-| ✅ | Popular GGUF files at ~15 GB | nearest: Kazakh +4.3%; ours **+1.3%** | [notebook 09](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
-| ⚠️ | Knowledge, full KazMMLU (22,889 questions) | −1.8 / −1.6 points (kk / ru) | [notebook 07b](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
+| ✅ | File size | **61.1 → 15.24 GB (4.0× smaller)** | [![notebook 07](https://img.shields.io/badge/notebook-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Kazakh / Russian text (perplexity growth) | **+1.3% / +0.4%** | [![notebook 07](https://img.shields.io/badge/notebook-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Bits and calibration chosen by English text instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | [![notebook 06](https://img.shields.io/badge/notebook-06-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb) ![simulated](https://img.shields.io/badge/simulated-8B949E?style=flat-square) |
+| ✅ | Same size, but 4 bits go to random or least-used experts | Kazakh +3.5…+5.0% (random) and +6.3% (least-used) vs. **+1.3%** | [![notebook 07c](https://img.shields.io/badge/notebook-07c-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb) ![simulated](https://img.shields.io/badge/simulated-8B949E?style=flat-square) |
+| ✅ | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] vs. the file compressed for English | [![data](https://img.shields.io/badge/data-translation-00BFFF?style=flat-square&labelColor=0D1117&logo=databricks&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
+| ✅ | Popular GGUF files at ~15 GB | nearest: Kazakh +4.3%; ours **+1.3%** | [![notebook 09](https://img.shields.io/badge/notebook-09-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
+| ⚠️ | Knowledge, full KazMMLU (22,889 questions) | −1.8 / −1.6 points (kk / ru) | [![notebook 07b](https://img.shields.io/badge/notebook-07b-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
 
 <a id="how"></a>
 ## ⚙️ How it works
@@ -91,19 +91,24 @@ linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 ```bash
-# 1. compress: calibrate on your language; experts that carry 90% of its traffic keep 4 bits, the rest get 3
-linguasqueeze compress \
-  --model ./Qwen3-30B-A3B-Instruct-2507 \
-  --calibration-data kazakh.txt russian.txt \
-  --bits 4,3 \
-  --output ./qwen3-30b-kk-ru
+export MODEL="./Qwen3-30B-A3B-Instruct-2507"
+export OUT="./qwen3-30b-kk-ru"
 
-# 2. evaluate: the same items for both models; every number of the compressed model comes from its files
+# 1. compress — calibrate on text in your language;
+#    experts that carry 90% of its traffic keep 4 bits, the rest get 3
+linguasqueeze compress \
+  --model "$MODEL" \
+  --calibration-data "kazakh.txt" "russian.txt" \
+  --bits 4,3 \
+  --output "$OUT"
+
+# 2. evaluate — the same items for both models;
+#    every number of the compressed model comes from its files
 linguasqueeze evaluate \
-  --original ./Qwen3-30B-A3B-Instruct-2507 \
-  --compressed ./qwen3-30b-kk-ru \
-  --text kk=kazakh_test.txt --text ru=russian_test.txt \
-  --exam --report report.json
+  --original "$MODEL" \
+  --compressed "$OUT" \
+  --text "kk=kazakh_test.txt" --text "ru=russian_test.txt" \
+  --exam --report "report.json"
 ```
 
 Calibration and test files are plain UTF-8 text, documents separated by an empty line. The command accepts text in any language; quality has been measured only for Kazakh and Russian.

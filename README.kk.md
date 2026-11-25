@@ -50,27 +50,27 @@
 
 ### 🧭 Неден бастау керек
 
-1. 📊 **2 минуттағы нәтиже** — [дәлелдер кестесі](#result)
-2. 🔁 **Қайталау** — [`pip install linguasqueeze` және екі пәрмен](#quick-start); біздің іске қосу: [experiments/cli](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/)
-3. 📚 **Зерттеудің толық тарихы** — [01–10 ноутбуктер, бақылау тәжірибелері, теріс нәтижелер](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md)
+| 📊 **2 минуттағы нәтиже** | 🔁 **Өзіңіз қайталаңыз** | 📚 **Толық тарих** |
+|:---:|:---:|:---:|
+| <a href="#result">дәлелдер кестесі</a> | <a href="#quick-start"><code>pip install</code> және екі пәрмен</a> | <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md">01–10 ноутбуктер, бақылау тәжірибелері</a> |
 
-**Мазмұны:** [Нәтижелер](#result) · [Қалай жұмыс істейді](#how) · [Жылдам бастау](#quick-start) · [Кімге](#who) · [Жол картасы](#roadmap) · [Шектеулер](#limitations) · [Зерттеу](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md) · [Дәйексөз](#citation)
+<p align="center"><b>Мазмұны:</b><br><a href="#result">📊 Нәтижелер</a> &nbsp;·&nbsp; <a href="#how">⚙️ Қалай жұмыс істейді</a> &nbsp;·&nbsp; <a href="#quick-start">🚀 Жылдам бастау</a> &nbsp;·&nbsp; <a href="#who">👥 Кімге</a> &nbsp;·&nbsp; <a href="#roadmap">🗺️ Жол картасы</a> &nbsp;·&nbsp; <a href="#limitations">⚠️ Шектеулер</a> &nbsp;·&nbsp; <a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.kk.md">📚 Зерттеу</a> &nbsp;·&nbsp; <a href="#citation">📝 Дәйексөз</a></p>
 
 <a id="result"></a>
 <a id="evaluation"></a>
 ## 📊 Qwen3-30B-A3B-де дәлелденді
 
-Әр жолда ноутбук пен деректер көрсетілген. *Сим.* белгісі бар жолдар жазылған файлдағыдай бит бөлу мен калибрлеуді қолданып, кванттауды имитациялау арқылы алынған; қалған жолдар дискідегі сығылған файлдан өлшенген.
+Әр жолда ноутбук пен деректер көрсетілген. **Имитация** белгісі бар жолдар жазылған файлдағыдай бит бөлу мен калибрлеуді қолданып, кванттауды имитациялау арқылы алынған; қалған жолдар дискідегі сығылған файлдан өлшенген.
 
-|  | Не өлшедік | Нәтиже | Дереккөз |
+|  | 🔬 Не өлшедік | 📈 Нәтиже | 📎 Дереккөз |
 |---|---|---|---|
-| ✅ | Файл өлшемі | **61,1 → 15,24 ГБ (4,0 есе кіші)** | [07 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Қазақ / орыс мәтіні (перплексия өсуі) | **+1,3% / +0,4%** | [07 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
-| ✅ | Биттер мен калибрлеу ағылшын мәтіні бойынша таңдалса, өлшемі бірдей | қазақ тіліне **16 есе нашар** (+14,3%, біздікі +0,9%) | [06 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *сим.* |
-| ✅ | Өлшемі бірдей, бірақ 4 бит кездейсоқ немесе ең сирек сарапшыларға берілсе | қазақ тілі +3,5…+5,0% (кездейсоқ) және +6,3% (сирек), біздікі **+1,3%** | [07c ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *сим.* |
-| ✅ | Ағылшын тілінен қазақ тіліне аударма, өлшемі бірдей | ағылшын тіліне қарай сығылған файлдан **+5,5 chrF** [+3,9; +7,1] | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
-| ✅ | Шамамен 15 ГБ танымал GGUF файлдары | ең жақыны: қазақ тілі +4,3%; біздікі **+1,3%** | [09 ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
-| ⚠️ | Білім, толық KazMMLU (22 889 сұрақ) | −1,8 / −1,6 ұпай (kk / ru) | [07b ноутбук](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
+| ✅ | Файл өлшемі | **61,1 → 15,24 ГБ (4,0 есе кіші)** | [![ноутбук 07](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Қазақ / орыс мәтіні (перплексия өсуі) | **+1,3% / +0,4%** | [![ноутбук 07](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Биттер мен калибрлеу ағылшын мәтіні бойынша таңдалса, өлшемі бірдей | қазақ тіліне **16 есе нашар** (+14,3%, біздікі +0,9%) | [![ноутбук 06](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-06-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb) ![имитация](https://img.shields.io/badge/%D0%B8%D0%BC%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F-8B949E?style=flat-square) |
+| ✅ | Өлшемі бірдей, бірақ 4 бит кездейсоқ немесе ең сирек сарапшыларға берілсе | қазақ тілі +3,5…+5,0% (кездейсоқ) және +6,3% (сирек), біздікі **+1,3%** | [![ноутбук 07c](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07c-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb) ![имитация](https://img.shields.io/badge/%D0%B8%D0%BC%D0%B8%D1%82%D0%B0%D1%86%D0%B8%D1%8F-8B949E?style=flat-square) |
+| ✅ | Ағылшын тілінен қазақ тіліне аударма, өлшемі бірдей | ағылшын тіліне қарай сығылған файлдан **+5,5 chrF** [+3,9; +7,1] | [![деректер](https://img.shields.io/badge/%D0%B4%D0%B5%D1%80%D0%B5%D0%BA%D1%82%D0%B5%D1%80-translation-00BFFF?style=flat-square&labelColor=0D1117&logo=databricks&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
+| ✅ | Шамамен 15 ГБ танымал GGUF файлдары | ең жақыны: қазақ тілі +4,3%; біздікі **+1,3%** | [![ноутбук 09](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-09-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
+| ⚠️ | Білім, толық KazMMLU (22 889 сұрақ) | −1,8 / −1,6 ұпай (kk / ru) | [![ноутбук 07b](https://img.shields.io/badge/%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA-07b-F37626?style=flat-square&labelColor=0D1117&logo=jupyter&logoColor=white)](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
 
 <a id="how"></a>
 ## ⚙️ Қалай жұмыс істейді
@@ -91,19 +91,24 @@ linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 ```bash
-# 1. compress: тіліңізде калибрлеу; оның трафигінің 90%-ын тасымалдайтын сарапшылар 4 бит алады, қалғандары 3
-linguasqueeze compress \
-  --model ./Qwen3-30B-A3B-Instruct-2507 \
-  --calibration-data kazakh.txt russian.txt \
-  --bits 4,3 \
-  --output ./qwen3-30b-kk-ru
+export MODEL="./Qwen3-30B-A3B-Instruct-2507"
+export OUT="./qwen3-30b-kk-ru"
 
-# 2. evaluate: екі модельге де бірдей сұрақтар; сығылған модельдің әр саны оның файлдарынан алынады
+# 1. compress — тіліңіздегі мәтіндермен калибрлеу;
+#    трафигінің 90%-ы бар сарапшылар 4 бит, қалғандары 3 бит алады
+linguasqueeze compress \
+  --model "$MODEL" \
+  --calibration-data "kazakh.txt" "russian.txt" \
+  --bits 4,3 \
+  --output "$OUT"
+
+# 2. evaluate — екі модельге де бірдей сұрақтар;
+#    сығылған модельдің әр саны оның файлдарынан алынады
 linguasqueeze evaluate \
-  --original ./Qwen3-30B-A3B-Instruct-2507 \
-  --compressed ./qwen3-30b-kk-ru \
-  --text kk=kazakh_test.txt --text ru=russian_test.txt \
-  --exam --report report.json
+  --original "$MODEL" \
+  --compressed "$OUT" \
+  --text "kk=kazakh_test.txt" --text "ru=russian_test.txt" \
+  --exam --report "report.json"
 ```
 
 Калибрлеу және тексеру файлдары — қарапайым UTF-8 мәтін, құжаттар бос жолмен бөлінеді. Пәрмен кез келген тілдегі мәтінді қабылдайды; сапа тек қазақ және орыс тілдері үшін өлшенген.
