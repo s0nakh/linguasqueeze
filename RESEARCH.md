@@ -292,7 +292,7 @@ Same model, calibration and quantizer; only the choice of 4-bit experts changes,
 | random experts, draw 3 | +5.0% | +4.0% | +9.4% |
 | least-used experts | +6.3% | +5.4% | +7.5% |
 
-All eight paired comparisons (traffic vs. each random plan and vs. least-used, kk and ru) have 95% bootstrap intervals above zero. Quantization is simulated, as in notebook 07.
+All eight paired comparisons (traffic vs. each random plan and vs. least-used, kk and ru) have 95% bootstrap intervals above zero. Quantization is simulated in memory; notebook 07 showed that scores of the written file equal those of the in-memory model (largest difference 0.0).
 
 Data: [`experiments/07/allocation_control/`](experiments/07/allocation_control/) · [notebook 07c](notebooks/07c_allocation_control.py)
 </details>

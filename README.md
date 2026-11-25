@@ -4,7 +4,7 @@
 
 ## Compress for your language, not just for your hardware.
 
-**Language-aware quantization for multilingual Mixture-of-Experts LLMs.**
+**Research-grade open-source tool: language-aware quantization for multilingual Mixture-of-Experts LLMs.**
 A quantized model can look fine on one average score while it loses a smaller language. LinguaSqueeze calibrates on text in *your* language, gives more bits to the experts your language actually uses, and tells you what your language lost. On Qwen3-30B-A3B, choosing bits and calibration by English text instead costs Kazakh 16× more at the same memory.
 First proof: Kazakh 🇰🇿 and Russian 🇷🇺 on Qwen3-30B-A3B — 61 GB → 15.24 GB, Kazakh perplexity +1.3%, on one free Kaggle GPU.<br>
 Translation English → Kazakh at the same size: **+5.5 chrF** over the file compressed for English.
@@ -34,11 +34,21 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 <a href="https://doi.org/10.5281/zenodo.24281161"><img alt="Paper" src="https://img.shields.io/badge/paper-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
 
+<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md"><img alt="research & full history" src="https://img.shields.io/badge/%F0%9F%93%9A_research_%26_full_history-open_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
 🇷🇺 [Русская версия](https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md) · 🇰🇿 [Қазақша нұсқасы](https://github.com/s0nakh/linguasqueeze/blob/main/README.kk.md) · [Research log](https://github.com/s0nakh/linguasqueeze/blob/main/docs/research-log.md) · [Related work](https://github.com/s0nakh/linguasqueeze/blob/main/docs/prior-art.md)
+
+<img src="https://raw.githubusercontent.com/s0nakh/linguasqueeze/main/assets/demo.gif" alt="Terminal: linguasqueeze compress and evaluate on Qwen3-30B-A3B" width="760"><br>
+<sub>The two commands on Qwen3-30B-A3B: verbatim output of our Kaggle T4 run, abridged (<a href="https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/">experiments/cli</a>), 92 minutes shown in about 15 seconds; paths shortened.</sub>
 
 </div>
 
 ---
+
+### 🧭 Start here
+
+1. 📊 **The result in 2 minutes** — [the proof table](https://github.com/s0nakh/linguasqueeze#result)
+2. 🔁 **Reproduce it** — [`pip install linguasqueeze` and two commands](https://github.com/s0nakh/linguasqueeze#quick-start); our run: [experiments/cli](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/)
+3. 📚 **The full research history** — [notebooks 01–10, controls, negative results](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md)
 
 **Contents:** [Results](https://github.com/s0nakh/linguasqueeze#result) · [How it works](https://github.com/s0nakh/linguasqueeze#how) · [Quick start](https://github.com/s0nakh/linguasqueeze#quick-start) · [Who it is for](https://github.com/s0nakh/linguasqueeze#who) · [Roadmap](https://github.com/s0nakh/linguasqueeze#roadmap) · [Limitations](https://github.com/s0nakh/linguasqueeze#limitations) · [Research](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md) · [Citation](https://github.com/s0nakh/linguasqueeze#citation)
 
@@ -46,16 +56,17 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 <a id="evaluation"></a>
 ## 📊 Proven on Qwen3-30B-A3B
 
-Every number comes from a written file and a fixed exam; data and scripts are in the repository.
+Each row links to the notebook and data behind it. Rows marked *sim.* use simulated quantization with the same bit allocation and calibration as the written file; all other rows are scored from the compressed file on disk.
 
 |  | What we measured | Result | Source |
 |---|---|---|---|
-| ✅ | File size | **61.1 → 15.24 GB (4.0× smaller)** | notebook 07 |
-| ✅ | Kazakh / Russian text (perplexity growth) | **+1.3% / +0.4%** | notebook 07 |
-| ✅ | Calibrating on English instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | notebook 06 |
-| ✅ | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] vs. the file compressed for English | experiments/translation |
-| ✅ | Popular GGUF files at ~15 GB | nearest: Kazakh +4.3%; ours **+1.3%** | notebook 09 |
-| ⚠️ | Knowledge, full KazMMLU (22,889 questions) | −1.8 / −1.6 points (kk / ru) | notebook 07b |
+| ✅ | File size | **61.1 → 15.24 GB (4.0× smaller)** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Kazakh / Russian text (perplexity growth) | **+1.3% / +0.4%** | [notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.ipynb) |
+| ✅ | Calibrating on English instead, same size | Kazakh **16× worse** (+14.3% vs. +0.9%) | [notebook 06](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/06_qwen3_language_aware_gptq.ipynb), *sim.* |
+| ✅ | Same size, but 4 bits go to random or least-used experts | Kazakh +3.5…+5.0% (random) and +6.3% (least-used) vs. **+1.3%** | [notebook 07c](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07c_allocation_control.ipynb), *sim.* |
+| ✅ | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] vs. the file compressed for English | [experiments/translation](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/translation/) |
+| ✅ | Popular GGUF files at ~15 GB | nearest: Kazakh +4.3%; ours **+1.3%** | [notebook 09](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/09_popular_quants_on_kazakh.ipynb) |
+| ⚠️ | Knowledge, full KazMMLU (22,889 questions) | −1.8 / −1.6 points (kk / ru) | [notebook 07b](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.ipynb) |
 
 <a id="how"></a>
 ## ⚙️ How it works
@@ -92,7 +103,7 @@ linguasqueeze evaluate \
 ```
 
 Calibration and test files are plain UTF-8 text, documents separated by an empty line. The command accepts text in any language; quality has been measured only for Kazakh and Russian.
-`--exam` adds the fixed exam of notebook 07: Belebele (150 passages each in kk, ru, en) and a 400-question KazMMLU sample per language (kk, ru). The KazMMLU numbers below come from the full test split (22,889 questions, notebook 07b), so a sample run gives somewhat different values. The quick exam is kept small so that it runs on Kaggle in reasonable time; for publication-grade KazMMLU numbers use notebook 07b. `compress` and `evaluate` stream the model one layer at a time, so a 61 GB source model is processed on one 16 GB GPU; what the compressed model needs to run depends on your runtime and context length.
+`--exam` adds the fixed exam of notebook 07: Belebele (150 passages each in kk, ru, en) and a KazMMLU sample of up to 400 questions per language (kk, ru), an equal number per subject (370 kk and 392 ru in our run). The KazMMLU numbers below come from the full test split (22,889 questions, notebook 07b), so a sample run gives somewhat different values. The quick exam is kept small so that it runs on Kaggle in reasonable time; for publication-grade KazMMLU numbers use notebook 07b. `compress` and `evaluate` stream the model one layer at a time, so a 61 GB source model is processed on one 16 GB GPU; what the compressed model needs to run depends on your runtime and context length.
 Supported for now: `compress` — Qwen3-MoE checkpoints in safetensors (run end to end on Qwen3-30B-A3B); `evaluate` — Qwen3-MoE and Qwen3.5/3.6-MoE.
 
 What `evaluate` reports (abbreviated), with the numbers we measured for Qwen3-30B-A3B with the same code ([notebook 07](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07_real_gptq_checkpoint.py), [07b](https://github.com/s0nakh/linguasqueeze/blob/main/notebooks/07b_full_kazmmlu.py)):
@@ -107,15 +118,15 @@ KazMMLU kk:        -1.8 pts
 KazMMLU ru:        -1.6 pts
 ```
 
-**These two commands, run on Qwen3-30B-A3B** (one Kaggle T4, 43 min for `compress`, 49 min for `evaluate`): 15.24 GB file, 4.0× smaller; Belebele perplexity kk +0.6%, ru +0.4%, en +4.0%; KazMMLU sample kk −0.8 pts [−3.5, +1.9], ru −1.5 pts [−4.3, +1.0] (370 + 392 questions). The calibration articles are those of notebook 07 with empty lines collapsed, so the numbers are close to, not identical with, notebook 07. Report and script: [`experiments/cli/`](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/).
+**These two commands, run on Qwen3-30B-A3B** (one Kaggle T4, 43 min for `compress`, 49 min for `evaluate`): 15.24 GB file, 4.0× smaller; Belebele perplexity kk +0.6%, ru +0.4%, en +4.0%; KazMMLU sample kk −0.8 pts [−3.5, +1.9], ru −1.5 pts [−4.3, +1.0] (370 + 392 questions). The calibration articles are those of notebook 07 with empty lines collapsed, so the numbers are close to, not identical with, notebook 07. Report, run summary with timings and script: [`experiments/cli/`](https://github.com/s0nakh/linguasqueeze/blob/main/experiments/cli/).
 
 Speed and memory at inference depend on your runtime, so `evaluate` does not guess them; measure them there.
 
 ## 📍 Current status (v0.8.2)
 
-**Available now:** `linguasqueeze compress` for Qwen3-MoE checkpoints · `linguasqueeze evaluate` for Qwen3-MoE and Qwen3.5/3.6-MoE · mixed 4/3-bit export in the standard GPTQ layout · calibration from plain text in any language · optional Belebele + KazMMLU exam · JSON report.
-
-**Not yet:** running mixed-width files in vLLM, llama.cpp, Ollama or LM Studio · compressing Qwen3.5/3.6-MoE · dense (non-MoE) models · speed and memory measurements of the compressed model.
+- ✅ **Verified:** `compress` → `evaluate` on Qwen3-30B-A3B for Kazakh + Russian, 4/3-bit, mixed export in the standard GPTQ layout; full KazMMLU; translation English → Kazakh.
+- 🧪 **Experimental:** other languages (the commands take text in any language, quality not yet measured); `evaluate` on Qwen3.5/3.6-MoE; other bit budgets.
+- ⛔ **Not supported yet:** running mixed-width files in vLLM, llama.cpp, Ollama or LM Studio · compressing Qwen3.5/3.6-MoE · dense (non-MoE) models · speed and memory measurements of the compressed model.
 
 <a id="who"></a>
 ## 👥 Who it is for
@@ -150,13 +161,14 @@ A tool that helps a small team compress a large model for its own language on af
 | ✅ v0.8 | `linguasqueeze compress` / `evaluate` | any language from text files; run end to end on Qwen3-30B-A3B |
 | ✅ — | Calibration language and knowledge (Qwen3.6, 3-bit) | no difference: KazMMLU kk +0.4 [−1.1, +1.8] |
 | ✅ — | Translation English → Kazakh, same size | **+5.5 chrF** [+3.9, +7.1] for the file compressed for kk+ru |
+| ✅ v0.8.2 | `pip install linguasqueeze` | on [PyPI](https://pypi.org/project/linguasqueeze/), published from a version tag by GitHub Actions |
 
 **🚀 Next**
 
 | 🚦 Status | 🧭 Step |
 |---|---|
-| 🔥 now | A ~2.5-bit file for 10–12 GB, where popular files lose 10–16% of Kazakh |
-| ⬜ | Install with one command (PyPI) and a ready Kaggle notebook |
+| 🔥 now | A ~2.5-bit file for 10–12 GB, where popular files lose 10–12% of Kazakh |
+| ⬜ | A ready Kaggle notebook: compress a model for your language in one click |
 | ⬜ | Our 4-bit file in the vLLM serving engine, compared with popular files in the same engine |
 | ⬜ | An exam on Kazakhstan's laws and official documents (kk, ru) |
 | ⬜ | MERA (Russian) |
@@ -179,14 +191,13 @@ Most welcome: reproductions on other GPUs and runtimes, support for more MoE arc
 
 ## 📚 Research and full history
 
-Ten notebooks, the controls, the negative results and every decision along the way: **[open the research page →](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md)**
+Notebooks 01–10, the controls, the negative results and every decision along the way: **[open the research page →](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md)**
 
 <a id="paper"></a>
 ## 📄 Paper
 
 The study is available as a preprint (CC BY 4.0) in three languages. The English version is the original; the Russian and Kazakh versions are translations.
 
-<p><a href="https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md"><img alt="research & full history" src="https://img.shields.io/badge/%F0%9F%93%9A_research_%26_full_history-open_%E2%86%92-A020F0?style=for-the-badge&labelColor=0D1117"></a></p>
 - 🇬🇧 [English](https://doi.org/10.5281/zenodo.24281161)
 - 🇷🇺 [Русский](https://doi.org/10.5281/zenodo.24281163)
 - 🇰🇿 [Қазақша](https://doi.org/10.5281/zenodo.24281169)
@@ -205,7 +216,7 @@ The study is available as a preprint (CC BY 4.0) in three languages. The English
 ```
 
 ```text
-Akhmetova, S. (2026). LinguaSqueeze: Language-aware mixed-precision quantization of a Mixture-of-Experts LLM for Kazakh and Russian [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.24281161
+Akhmetova, S. (2026). LinguaPrune: Language-aware mixed-precision quantization of a Mixture-of-Experts LLM for Kazakh and Russian [Preprint]. Zenodo. https://doi.org/10.5281/zenodo.24281161
 ```
 
 <a id="citation"></a>

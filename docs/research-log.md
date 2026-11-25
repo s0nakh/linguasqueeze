@@ -315,7 +315,7 @@ Negative results stay in. Raw outputs are in [`experiments/`](../experiments/), 
 ## 2026-11-19 · 07c · Is it the allocation?
 
 - **Question.** Does giving more bits to the most-used experts matter, or would any choice of experts at the same memory do as well? (The English control in 06/07 changes the allocation and the calibration text together.)
-- **Setup.** [Notebook 07c](../notebooks/07c_allocation_control.py): Qwen3-30B-A3B-Instruct-2507, GPTQ group 128, attention 8-bit, kk+ru Wikipedia calibration, the same exam. Only the choice of 4-bit experts changes: most-used (traffic, notebook 07), random (three seeds), least-used. The number of 4-bit experts in each layer is the same in every configuration (checked in all 48 layers). Quantization is simulated, as in notebook 07. Run time 148 min on Kaggle T4 ×2. Data: [`experiments/07/allocation_control/`](../experiments/07/allocation_control/).
+- **Setup.** [Notebook 07c](../notebooks/07c_allocation_control.py): Qwen3-30B-A3B-Instruct-2507, GPTQ group 128, attention 8-bit, kk+ru Wikipedia calibration, the same exam. Only the choice of 4-bit experts changes: most-used (traffic, notebook 07), random (three seeds), least-used. The number of 4-bit experts in each layer is the same in every configuration (checked in all 48 layers). Quantization is simulated in memory; notebook 07 showed that scores of the written file equal those of the in-memory model (largest difference 0.0). Run time 148 min on Kaggle T4 ×2. Data: [`experiments/07/allocation_control/`](../experiments/07/allocation_control/).
 - **Result.** Perplexity growth over the original, 150 Belebele passages per language:
 
 | 4 bits go to | Kazakh | Russian | English |

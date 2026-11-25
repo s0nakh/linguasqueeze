@@ -1,0 +1,93 @@
+{
+ "minutes_compress": 42.98881318171819,
+ "minutes_evaluate": 49.126812756061554,
+ "rtn_fallback_experts": 514,
+ "calibration_documents": 128,
+ "calibration_tokens": 61233,
+ "report": {
+  "size_gb": {
+   "original": 61.066575656,
+   "compressed": 15.235296544
+  },
+  "compression": 4.008230196218227,
+  "perplexity": {
+   "belebele en": {
+    "original": 15.006241776302732,
+    "compressed": 15.60419508958694,
+    "growth": 0.03984697315942709
+   },
+   "belebele kk": {
+    "original": 4.606542905049307,
+    "compressed": 4.634936397253605,
+    "growth": 0.006163731194856581
+   },
+   "belebele ru": {
+    "original": 6.545694960063604,
+    "compressed": 6.572569062280822,
+    "growth": 0.0041056148172473605
+   },
+   "text kk": {
+    "original": 3.6095775928907985,
+    "compressed": 3.665697560262259,
+    "growth": 0.015547516552072649
+   },
+   "text ru": {
+    "original": 4.135794869093601,
+    "compressed": 4.220999843772842,
+    "growth": 0.020601837706209603
+   }
+  },
+  "accuracy": {
+   "belebele en": {
+    "n": 150,
+    "original": 0.9266666666666666,
+    "compressed": 0.92,
+    "diff_pts": -0.6666666666666666,
+    "ci95_pts": [
+     -3.3333333333333335,
+     2.0
+    ]
+   },
+   "belebele kk": {
+    "n": 150,
+    "original": 0.7733333333333333,
+    "compressed": 0.76,
+    "diff_pts": -1.3333333333333333,
+    "ci95_pts": [
+     -5.333333333333333,
+     2.6666666666666665
+    ]
+   },
+   "belebele ru": {
+    "n": 150,
+    "original": 0.9266666666666666,
+    "compressed": 0.92,
+    "diff_pts": -0.6666666666666666,
+    "ci95_pts": [
+     -2.0,
+     0.0
+    ]
+   },
+   "kazmmlu kk": {
+    "n": 370,
+    "original": 0.6675675675675675,
+    "compressed": 0.6594594594594595,
+    "diff_pts": -0.8108108108108109,
+    "ci95_pts": [
+     -3.5135135135135136,
+     1.8918918918918919
+    ]
+   },
+   "kazmmlu ru": {
+    "n": 392,
+    "original": 0.7142857142857143,
+    "compressed": 0.6989795918367347,
+    "diff_pts": -1.530612244897959,
+    "ci95_pts": [
+     -4.336734693877551,
+     1.0204081632653061
+    ]
+   }
+  }
+ }
+}
