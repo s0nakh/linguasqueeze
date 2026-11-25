@@ -21,7 +21,7 @@
 <p>
 <a href="https://pypi.org/project/linguasqueeze/"><img alt="PyPI" src="https://img.shields.io/pypi/v/linguasqueeze?style=for-the-badge&labelColor=0D1117&logo=pypi&logoColor=white&color=39FF14"></a>
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-39FF14?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=white"></a>
-<a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
+<a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.6%2B-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
 <a href="https://github.com/huggingface/transformers"><img alt="Transformers" src="https://img.shields.io/badge/Transformers-5.x-FFD21E?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
 <a href="https://www.kaggle.com/"><img alt="Kaggle" src="https://img.shields.io/badge/Kaggle-free%20T4-20BEFF?style=for-the-badge&labelColor=0D1117&logo=kaggle&logoColor=white"></a>
 </p>
@@ -89,6 +89,8 @@
 pip install linguasqueeze
 linguasqueeze --version   # linguasqueeze 0.8.2
 ```
+
+Python 3.10+ және PyTorch 2.6+ қажет (Linux, Windows, Apple silicon негізіндегі Mac, Kaggle); Intel процессорлы Mac үшін PyTorch 2.6 шығарылмайды.
 
 ```bash
 export MODEL="./Qwen3-30B-A3B-Instruct-2507"
