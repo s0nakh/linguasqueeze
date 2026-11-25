@@ -362,7 +362,7 @@ MoE на 30 млрд параметров в 16 битах весит 61 ГБ, �
 ## 📦 Python-пакет
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1"
+pip install linguasqueeze
 ```
 
 | Модуль | Что делает |

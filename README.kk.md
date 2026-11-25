@@ -19,6 +19,7 @@
 <a href="#roadmap"><img alt="Status" src="https://img.shields.io/badge/status-research%20preview-FF8C00?style=for-the-badge&labelColor=0D1117&logo=jupyter&logoColor=white"></a>
 </p>
 <p>
+<a href="https://pypi.org/project/linguasqueeze/"><img alt="PyPI" src="https://img.shields.io/pypi/v/linguasqueeze?style=for-the-badge&labelColor=0D1117&logo=pypi&logoColor=white&color=39FF14"></a>
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-39FF14?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
 <a href="https://github.com/huggingface/transformers"><img alt="Transformers" src="https://img.shields.io/badge/Transformers-5.x-FFD21E?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
@@ -71,8 +72,8 @@
 ## 🚀 Жылдам бастау
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1" transformers datasets
-linguasqueeze --version   # linguasqueeze 0.8.1
+pip install linguasqueeze
+linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 ```bash
@@ -111,7 +112,7 @@ KazMMLU ru:        -1.6 pts
 
 Модель жұмысының жылдамдығы мен жадысы іске қосу бағдарламасына байланысты, сондықтан `evaluate` оларды болжамайды: оларды сол жерде өлшеңіз.
 
-## 📍 Қазір не бар (v0.8.1)
+## 📍 Қазір не бар (v0.8.2)
 
 **Қазір жұмыс істейді:** Qwen3-MoE үшін `linguasqueeze compress` · Qwen3-MoE және Qwen3.5/3.6-MoE үшін `linguasqueeze evaluate` · стандартты GPTQ форматындағы аралас 4/3 биттік экспорт · кез келген тілдегі қарапайым мәтінмен калибрлеу · қаласаңыз Belebele + KazMMLU емтиханы · JSON есебі.
 
@@ -221,7 +222,7 @@ LinguaSqueeze-ді өз жұмысыңызда қолансаңыз, оған с
   title   = {LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs},
   author  = {Akhmetova, Sophia},
   year    = {2026},
-  version = {0.8.1},
+  version = {0.8.2},
   url     = {https://github.com/s0nakh/linguasqueeze}
 }
 ```
@@ -229,7 +230,7 @@ LinguaSqueeze-ді өз жұмысыңызда қолансаңыз, оған с
 **APA**
 
 ```text
-Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
+Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.2) [Computer software]. https://github.com/s0nakh/linguasqueeze
 ```
 
 ## ⚖️ Лицензия

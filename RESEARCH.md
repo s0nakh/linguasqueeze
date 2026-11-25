@@ -362,7 +362,7 @@ Data: [`experiments/10/`](experiments/10/)
 ## 📦 Python package
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1"
+pip install linguasqueeze
 ```
 
 | Module | What it does |

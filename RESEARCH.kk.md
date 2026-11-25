@@ -362,7 +362,7 @@ Belebele үзінділеріндегі түпнұсқа модельге қат
 ## 📦 Python пакеті
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1"
+pip install linguasqueeze
 ```
 
 | Модуль | Не істейді |

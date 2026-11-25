@@ -4,23 +4,40 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguasqueeze"
-version = "0.8.1"
+version = "0.8.2"
 description = "Compress for your language, not just for your hardware: language-aware quantization for multilingual MoE LLMs"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 authors = [{ name = "Sophia Akhmetova" }]
-dependencies = ["numpy", "torch"]
+keywords = ["llm", "quantization", "gptq", "mixture-of-experts", "moe", "multilingual", "kazakh", "low-resource-languages", "compression"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Natural Language :: Russian",
+]
+dependencies = ["numpy", "torch>=2.6", "safetensors", "transformers>=5", "datasets", "pandas"]
 
 [project.optional-dependencies]
-eval = ["datasets", "pandas", "transformers>=5"]
-test = ["pytest", "pandas", "transformers>=5"]
+eval = []  # kept for old install commands; everything is in the base install now
+test = ["pytest"]
 
 [project.scripts]
 linguasqueeze = "linguasqueeze.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/s0nakh/linguasqueeze"
+Repository = "https://github.com/s0nakh/linguasqueeze"
+Documentation = "https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md"
+Issues = "https://github.com/s0nakh/linguasqueeze/issues"
+Paper = "https://doi.org/10.5281/zenodo.24281161"
+"Models" = "https://huggingface.co/s0nakh"
 
 [tool.setuptools.packages.find]
 where = ["src"]

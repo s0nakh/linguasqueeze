@@ -16,9 +16,10 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 <a href="https://github.com/s0nakh/linguasqueeze/actions/workflows/tests.yml"><img alt="Tests" src="https://img.shields.io/github/actions/workflow/status/s0nakh/linguasqueeze/tests.yml?style=for-the-badge&labelColor=0D1117&logo=githubactions&logoColor=white&label=tests"></a>
 <a href="https://github.com/s0nakh/linguasqueeze"><img alt="Stars" src="https://img.shields.io/github/stars/s0nakh/linguasqueeze?style=for-the-badge&labelColor=0D1117&logo=github&color=A020F0"></a>
 <a href="https://github.com/s0nakh/linguasqueeze/commits/main"><img alt="Last commit" src="https://img.shields.io/github/last-commit/s0nakh/linguasqueeze?style=for-the-badge&labelColor=0D1117&logo=git&logoColor=white&color=39FF14"></a>
-<a href="#roadmap"><img alt="Status" src="https://img.shields.io/badge/status-research%20preview-FF8C00?style=for-the-badge&labelColor=0D1117&logo=jupyter&logoColor=white"></a>
+<a href="https://github.com/s0nakh/linguasqueeze#roadmap"><img alt="Status" src="https://img.shields.io/badge/status-research%20preview-FF8C00?style=for-the-badge&labelColor=0D1117&logo=jupyter&logoColor=white"></a>
 </p>
 <p>
+<a href="https://pypi.org/project/linguasqueeze/"><img alt="PyPI" src="https://img.shields.io/pypi/v/linguasqueeze?style=for-the-badge&labelColor=0D1117&logo=pypi&logoColor=white&color=39FF14"></a>
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-39FF14?style=for-the-badge&labelColor=0D1117&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&labelColor=0D1117&logo=pytorch&logoColor=white"></a>
 <a href="https://github.com/huggingface/transformers"><img alt="Transformers" src="https://img.shields.io/badge/Transformers-5.x-FFD21E?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
@@ -26,9 +27,9 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 </p>
 <p>
 <a href="https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507"><img alt="Model" src="https://img.shields.io/badge/model-Qwen3--30B--A3B-F0529C?style=for-the-badge&labelColor=0D1117&logo=huggingface&logoColor=white"></a>
-<a href="#citation"><img alt="Cite" src="https://img.shields.io/badge/cite-BibTeX-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a>
-<a href="#evaluation"><img alt="Eval" src="https://img.shields.io/badge/eval-KazMMLU%20%C2%B7%20Belebele-00C2FF?style=for-the-badge&labelColor=0D1117&logo=meta&logoColor=white"></a>
-<a href="#evaluation"><img alt="Languages" src="https://img.shields.io/badge/languages-kk%20%C2%B7%20ru-39FF14?style=for-the-badge&labelColor=0D1117&logo=googletranslate&logoColor=white"></a>
+<a href="https://github.com/s0nakh/linguasqueeze#citation"><img alt="Cite" src="https://img.shields.io/badge/cite-BibTeX-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a>
+<a href="https://github.com/s0nakh/linguasqueeze#evaluation"><img alt="Eval" src="https://img.shields.io/badge/eval-KazMMLU%20%C2%B7%20Belebele-00C2FF?style=for-the-badge&labelColor=0D1117&logo=meta&logoColor=white"></a>
+<a href="https://github.com/s0nakh/linguasqueeze#evaluation"><img alt="Languages" src="https://img.shields.io/badge/languages-kk%20%C2%B7%20ru-39FF14?style=for-the-badge&labelColor=0D1117&logo=googletranslate&logoColor=white"></a>
 <a href="https://github.com/s0nakh/linguasqueeze/blob/main/README.ru.md"><img alt="Docs" src="https://img.shields.io/badge/docs-EN%20%C2%B7%20RU%20%C2%B7%20KK-A020F0?style=for-the-badge&labelColor=0D1117&logo=readthedocs&logoColor=white"></a>
 <a href="https://doi.org/10.5281/zenodo.24281161"><img alt="Paper" src="https://img.shields.io/badge/paper-Zenodo-1682D4?style=for-the-badge&labelColor=0D1117&logo=zenodo&logoColor=white"></a>
 </p>
@@ -39,7 +40,7 @@ Translation English → Kazakh at the same size: **+5.5 chrF** over the file com
 
 ---
 
-**Contents:** [Results](#result) · [How it works](#how) · [Quick start](#quick-start) · [Who it is for](#who) · [Roadmap](#roadmap) · [Limitations](#limitations) · [Research](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md) · [Citation](#citation)
+**Contents:** [Results](https://github.com/s0nakh/linguasqueeze#result) · [How it works](https://github.com/s0nakh/linguasqueeze#how) · [Quick start](https://github.com/s0nakh/linguasqueeze#quick-start) · [Who it is for](https://github.com/s0nakh/linguasqueeze#who) · [Roadmap](https://github.com/s0nakh/linguasqueeze#roadmap) · [Limitations](https://github.com/s0nakh/linguasqueeze#limitations) · [Research](https://github.com/s0nakh/linguasqueeze/blob/main/RESEARCH.md) · [Citation](https://github.com/s0nakh/linguasqueeze#citation)
 
 <a id="result"></a>
 <a id="evaluation"></a>
@@ -70,8 +71,8 @@ Every number comes from a written file and a fixed exam; data and scripts are in
 ## 🚀 Quick start
 
 ```bash
-pip install "git+https://github.com/s0nakh/linguasqueeze@v0.8.1" transformers datasets
-linguasqueeze --version   # linguasqueeze 0.8.1
+pip install linguasqueeze
+linguasqueeze --version   # linguasqueeze 0.8.2
 ```
 
 ```bash
@@ -110,7 +111,7 @@ KazMMLU ru:        -1.6 pts
 
 Speed and memory at inference depend on your runtime, so `evaluate` does not guess them; measure them there.
 
-## 📍 Current status (v0.8.1)
+## 📍 Current status (v0.8.2)
 
 **Available now:** `linguasqueeze compress` for Qwen3-MoE checkpoints · `linguasqueeze evaluate` for Qwen3-MoE and Qwen3.5/3.6-MoE · mixed 4/3-bit export in the standard GPTQ layout · calibration from plain text in any language · optional Belebele + KazMMLU exam · JSON report.
 
@@ -210,7 +211,7 @@ Akhmetova, S. (2026). LinguaSqueeze: Language-aware mixed-precision quantization
 <a id="citation"></a>
 ## 📝 Citation
 
-<p align="center"><a href="#citation"><img alt="Cite this repository" src="https://img.shields.io/badge/cite%20as-BibTeX%20%C2%B7%20APA-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a></p>
+<p align="center"><a href="https://github.com/s0nakh/linguasqueeze#citation"><img alt="Cite this repository" src="https://img.shields.io/badge/cite%20as-BibTeX%20%C2%B7%20APA-00BFFF?style=for-the-badge&labelColor=0D1117&logo=googlescholar&logoColor=white"></a></p>
 
 If you use LinguaSqueeze in your work, please cite it. Each block below has a copy button; on GitHub, **Cite this repository** in the sidebar gives the same from [`CITATION.cff`](https://github.com/s0nakh/linguasqueeze/blob/main/CITATION.cff).
 
@@ -221,7 +222,7 @@ If you use LinguaSqueeze in your work, please cite it. Each block below has a co
   title   = {LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs},
   author  = {Akhmetova, Sophia},
   year    = {2026},
-  version = {0.8.1},
+  version = {0.8.2},
   url     = {https://github.com/s0nakh/linguasqueeze}
 }
 ```
@@ -229,7 +230,7 @@ If you use LinguaSqueeze in your work, please cite it. Each block below has a co
 **APA**
 
 ```text
-Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.1) [Computer software]. https://github.com/s0nakh/linguasqueeze
+Akhmetova, S. (2026). LinguaSqueeze: Language-aware compression for Mixture-of-Experts LLMs (Version 0.8.2) [Computer software]. https://github.com/s0nakh/linguasqueeze
 ```
 
 ## ⚖️ License
